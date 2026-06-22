@@ -1,0 +1,85 @@
+{
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "beats": [
+        {
+          "beatNumber": 1,
+          "type": "TENSION",
+          "tensionLevel": 6,
+          "summary": ""
+        },
+        {
+          "beatNumber": 2,
+          "type": "REVELATION",
+          "tensionLevel": 7,
+          "summary": ""
+        },
+        {
+          "beatNumber": 3,
+          "type": "ACTION",
+          "tensionLevel": 8,
+          "summary": ""
+        },
+        {
+          "beatNumber": 4,
+          "type": "EMOTIONAL",
+          "tensionLevel": 5,
+          "summary": ""
+        },
+        {
+          "beatNumber": 5,
+          "type": "QUIET",
+          "tensionLevel": 2,
+          "summary": ""
+        }
+      ],
+      "chapterArc": {
+        "type": "falling",
+        "avgTension": 5.6,
+        "pattern": "TENSION → REVELATION → ACTION → EMOTIONAL → QUIET"
+      }
+    },
+    {
+      "chapterNumber": 2,
+      "beats": [
+        {
+          "beatNumber": 1,
+          "type": "QUIET",
+          "tensionLevel": 2,
+          "summary": ""
+        },
+        {
+          "beatNumber": 2,
+          "type": "TENSION",
+          "tensionLevel": 6,
+          "summary": ""
+        },
+        {
+          "beatNumber": 3,
+          "type": "REVELATION",
+          "tensionLevel": 7,
+          "summary": ""
+        },
+        {
+          "beatNumber": 4,
+          "type": "TENSION",
+          "tensionLevel": 6,
+          "summary": ""
+        },
+        {
+          "beatNumber": 5,
+          "type": "ACTION",
+          "tensionLevel": 8,
+          "summary": ""
+        }
+      ],
+      "chapterArc": {
+        "type": "rising",
+        "avgTension": 5.8,
+        "pattern": "QUIET → TENSION → REVELATION → TENSION → ACTION"
+      }
+    }
+  ],
+  "arcAnalysis": {}
+}

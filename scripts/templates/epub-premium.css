@@ -1,0 +1,250 @@
+/* ═══════════════════════════════════════════
+   EPUB Premium Template — Novel Master v1.2
+   CSS cho EPUB3 với bảng màu Tiểu Tâm
+   ═══════════════════════════════════════════ */
+
+/* ── Bảng màu ── */
+:root {
+  --bg: #F5F0EB;
+  --accent: #C9A96E;
+  --danger: #8B1A2F;
+  --calm: #B8C9C0;
+  --depth: #2C2C2C;
+}
+
+/* ── Body ── */
+body {
+  font-family: 'Noto Serif', 'Georgia', 'Times New Roman', serif;
+  line-height: 1.7;
+  color: #2C2C2C;
+  text-align: justify;
+  margin: 1em;
+  background: #F5F0EB;
+}
+
+/* ── Headings ── */
+h1, h2, h3 {
+  font-family: 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+  text-align: center;
+  color: #2C2C2C;
+  margin-top: 2em;
+  margin-bottom: 1em;
+}
+
+h1 {
+  font-size: 2em;
+  border-bottom: 2px solid #C9A96E;
+  padding-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  color: #8B1A2F;
+}
+
+/* ── Drop Caps — chữ đầu mỗi chương ── */
+p.first-paragraph::first-letter,
+.drop-cap::first-letter {
+  float: left;
+  font-size: 3.5em;
+  line-height: 0.8;
+  padding-right: 0.1em;
+  padding-top: 0.05em;
+  color: #8B1A2F;
+  font-weight: bold;
+  font-family: 'Noto Serif', Georgia, serif;
+}
+
+/* ── Trang bìa ── */
+.cover-page {
+  text-align: center;
+  page-break-after: always;
+  padding-top: 30%;
+}
+
+.cover-page img {
+  max-width: 100%;
+  max-height: 90vh;
+}
+
+/* ── Trang bìa trong (Title Page) ── */
+.title-page {
+  text-align: center;
+  page-break-after: always;
+  padding-top: 25%;
+}
+
+.title-page h1 {
+  font-size: 2.5em;
+  border: none;
+  margin-bottom: 0.5em;
+}
+
+.title-page .author {
+  font-size: 1.3em;
+  color: #C9A96E;
+  margin-top: 1em;
+}
+
+.title-page .publisher {
+  font-size: 0.9em;
+  color: #888;
+  margin-top: 3em;
+}
+
+/* ── Trang bản quyền ── */
+.copyright-page {
+  font-size: 0.85em;
+  color: #666;
+  margin-top: 60%;
+  page-break-after: always;
+}
+
+.copyright-page p {
+  text-align: center;
+  margin: 0.3em 0;
+}
+
+/* ── Lời đề tặng ── */
+.dedication {
+  text-align: center;
+  font-style: italic;
+  padding-top: 30%;
+  page-break-after: always;
+  color: #8B1A2F;
+  font-size: 1.1em;
+}
+
+/* ── Trang chia phần (Arc/Part) ── */
+.part-page {
+  text-align: center;
+  page-break-before: always;
+  page-break-after: always;
+  padding-top: 35%;
+}
+
+.part-page h1 {
+  font-size: 2em;
+  color: #8B1A2F;
+  border: none;
+  margin-bottom: 0.3em;
+}
+
+.part-page .part-subtitle {
+  font-size: 1.1em;
+  color: #C9A96E;
+  font-style: italic;
+}
+
+/* ── Chương ── */
+.chapter {
+  page-break-before: always;
+}
+
+.chapter h2 {
+  margin-top: 3em;
+  margin-bottom: 1.5em;
+}
+
+/* ── Separator ── */
+.scene-break {
+  text-align: center;
+  margin: 2em 0;
+  color: #C9A96E;
+  font-size: 1.2em;
+}
+
+.scene-break::before {
+  content: "✦ ✦ ✦";
+}
+
+/* ── Phụ lục nhân vật ── */
+.character-guide {
+  page-break-before: always;
+}
+
+.character-entry {
+  margin-bottom: 1.5em;
+  padding: 1em;
+  border-left: 3px solid #C9A96E;
+  background: rgba(201,169,110,0.05);
+}
+
+.character-entry h3 {
+  text-align: left;
+  color: #8B1A2F;
+  margin: 0 0 0.3em 0;
+}
+
+.character-entry .aliases {
+  font-style: italic;
+  color: #888;
+  font-size: 0.9em;
+}
+
+/* ── Thuật ngữ ── */
+.glossary dt {
+  font-weight: bold;
+  color: #8B1A2F;
+  margin-top: 0.8em;
+}
+
+.glossary dd {
+  margin-left: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+/* ── Niên biểu ── */
+.timeline-entry {
+  margin-bottom: 1em;
+  padding-left: 1em;
+  border-left: 2px solid #B8C9C0;
+}
+
+.timeline-entry .date {
+  font-weight: bold;
+  color: #C9A96E;
+}
+
+/* ── Về tác giả ── */
+.about-author {
+  text-align: center;
+  page-break-before: always;
+  padding-top: 15%;
+}
+
+.about-author img.qr {
+  width: 150px;
+  height: 150px;
+  margin: 1em auto;
+  display: block;
+}
+
+.about-author .author-name {
+  font-size: 1.5em;
+  color: #8B1A2F;
+  margin-bottom: 0.5em;
+}
+
+/* ── Blockquote ── */
+blockquote {
+  border-left: 3px solid #C9A96E;
+  padding-left: 1em;
+  margin: 1em 0;
+  color: #555;
+  font-style: italic;
+}
+
+/* ── Links ── */
+a {
+  color: #8B1A2F;
+  text-decoration: none;
+}
+
+/* ── Images ── */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}

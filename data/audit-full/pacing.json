@@ -1,0 +1,45 @@
+{
+  "chapters": [
+    {
+      "chapterNumber": 1,
+      "beats": [
+        {
+          "beatNumber": 1,
+          "type": "ACTION",
+          "tensionLevel": 8,
+          "summary": ""
+        },
+        {
+          "beatNumber": 2,
+          "type": "TENSION",
+          "tensionLevel": 6,
+          "summary": ""
+        },
+        {
+          "beatNumber": 3,
+          "type": "REVELATION",
+          "tensionLevel": 7,
+          "summary": ""
+        },
+        {
+          "beatNumber": 4,
+          "type": "EMOTIONAL",
+          "tensionLevel": 5,
+          "summary": ""
+        },
+        {
+          "beatNumber": 5,
+          "type": "QUIET",
+          "tensionLevel": 2,
+          "summary": ""
+        }
+      ],
+      "chapterArc": {
+        "type": "falling",
+        "avgTension": 5.6,
+        "pattern": "ACTION → TENSION → REVELATION → EMOTIONAL → QUIET"
+      }
+    }
+  ],
+  "arcAnalysis": {}
+}

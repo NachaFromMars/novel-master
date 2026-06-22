@@ -1,0 +1,80 @@
+{
+  "characters": {
+    "tran-huyen-trang": {
+      "name": "Trần Huyền Trang",
+      "role": "protagonist",
+      "voiceType": "dialogue",
+      "vocabulary": {
+        "level": "educated",
+        "formalityScore": "0.3",
+        "examples": [],
+        "avoids": []
+      },
+      "sentenceStyle": {
+        "type": "short-punchy",
+        "avgLength": 0,
+        "preference": "short"
+      },
+      "catchphrases": [],
+      "dialect": {
+        "region": "modern",
+        "markers": []
+      },
+      "emotionalExpression": {
+        "anger": "",
+        "joy": "",
+        "fear": "",
+        "love": ""
+      },
+      "forbiddenWords": [],
+      "speechQuirks": [],
+      "exampleDialogues": [],
+      "stats": {
+        "totalDialogueLines": 0,
+        "avgWordsPerLine": 0,
+        "exclamationRate": 0,
+        "questionRate": 0,
+        "ellipsisRate": 0,
+        "lastUpdated": "2026-03-10T21:49:38.384Z"
+      }
+    },
+    "ton-ngo-khong": {
+      "name": "Tôn Ngộ Không",
+      "role": "deuteragonist",
+      "voiceType": "dialogue",
+      "vocabulary": {
+        "level": "casual",
+        "formalityScore": "0.1",
+        "examples": [],
+        "avoids": []
+      },
+      "sentenceStyle": {
+        "type": "short-punchy",
+        "avgLength": 12,
+        "preference": "medium"
+      },
+      "catchphrases": [],
+      "dialect": {
+        "region": "modern",
+        "markers": []
+      },
+      "emotionalExpression": {
+        "anger": "",
+        "joy": "",
+        "fear": "",
+        "love": ""
+      },
+      "forbiddenWords": [],
+      "speechQuirks": [],
+      "exampleDialogues": [],
+      "stats": {
+        "totalDialogueLines": 0,
+        "avgWordsPerLine": 0,
+        "exclamationRate": 0,
+        "questionRate": 0,
+        "ellipsisRate": 0,
+        "lastUpdated": "2026-03-10T21:49:38.326Z"
+      }
+    }
+  }
+}

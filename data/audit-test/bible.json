@@ -1,0 +1,223 @@
+{
+  "project": {
+    "name": "Audit Test Novel",
+    "slug": "audit-test",
+    "genre": "fantasy",
+    "pov": "first-person",
+    "mc": null,
+    "created": "2026-03-10T21:47:19.734Z",
+    "updated": "2026-03-10T21:49:50.810Z",
+    "totalChapters": 0,
+    "currentArc": 1
+  },
+  "characters": {
+    "trn-huyn-trang": {
+      "identity": {
+        "name": "Trần Huyền Trang",
+        "aliases": [],
+        "age": 17,
+        "gender": "male",
+        "species": "human",
+        "appearance": {
+          "height": "",
+          "build": "",
+          "face": "",
+          "distinguishing": "",
+          "clothing": ""
+        },
+        "background": ""
+      },
+      "personality": {
+        "traits": [],
+        "motivations": [],
+        "fears": [],
+        "desires": [],
+        "moralCompass": "",
+        "quirks": []
+      },
+      "relationships": [],
+      "voice": {
+        "vocabularyLevel": "educated",
+        "sentenceStyle": "flowing",
+        "catchphrases": [],
+        "dialect": "",
+        "emotionalExpression": {
+          "anger": "",
+          "joy": "",
+          "fear": "",
+          "love": ""
+        },
+        "forbiddenWords": [],
+        "speechQuirks": []
+      },
+      "arc": {
+        "type": "unknown",
+        "trajectory": []
+      },
+      "states": {
+        "ch00": {
+          "location": "Trường An",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 3,
+          "notes": ""
+        }
+      }
+    },
+    "tn-ng-khng": {
+      "identity": {
+        "name": "Tôn Ngộ Không",
+        "aliases": [],
+        "age": 500,
+        "gender": "male",
+        "species": "human",
+        "appearance": {
+          "height": "",
+          "build": "",
+          "face": "",
+          "distinguishing": "",
+          "clothing": ""
+        },
+        "background": ""
+      },
+      "personality": {
+        "traits": [],
+        "motivations": [],
+        "fears": [],
+        "desires": [],
+        "moralCompass": "",
+        "quirks": []
+      },
+      "relationships": [],
+      "voice": {
+        "vocabularyLevel": "casual",
+        "sentenceStyle": "flowing",
+        "catchphrases": [],
+        "dialect": "",
+        "emotionalExpression": {
+          "anger": "",
+          "joy": "",
+          "fear": "",
+          "love": ""
+        },
+        "forbiddenWords": [],
+        "speechQuirks": []
+      },
+      "arc": {
+        "type": "unknown",
+        "trajectory": []
+      },
+      "states": {
+        "ch00": {
+          "location": "Hoa Quả Sơn",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 9,
+          "notes": ""
+        }
+      }
+    }
+  },
+  "locations": {
+    "truong-an": {
+      "name": "Trường An",
+      "type": "city",
+      "region": "Đại Đường",
+      "geography": {
+        "terrain": "",
+        "climate": "",
+        "landmarks": []
+      },
+      "culture": {
+        "population": "",
+        "language": "",
+        "customs": "",
+        "politics": ""
+      },
+      "connections": [],
+      "firstAppearance": 1,
+      "significance": "Kinh đô"
+    }
+  },
+  "items": {
+    "ca-sa-kim-lan": {
+      "name": "Cà Sa Kim Lan",
+      "type": "equipment",
+      "description": "Áo cà sa Phật tổ ban",
+      "properties": {
+        "material": "",
+        "weight": "",
+        "powers": [],
+        "limitations": []
+      },
+      "owner": "tran-huyen-trang",
+      "ownerHistory": [],
+      "firstAppearance": 3,
+      "currentLocation": ""
+    }
+  },
+  "factions": {},
+  "history": [],
+  "worldRules": {
+    "magic": {
+      "system": "",
+      "levels": [],
+      "rules": [],
+      "limitations": []
+    },
+    "physics": {
+      "notes": ""
+    },
+    "society": {
+      "notes": ""
+    }
+  },
+  "snapshots": {
+    "ch01": {
+      "timestamp": "2026-03-10T21:47:31.689Z",
+      "characterStates": {
+        "trn-huyn-trang": {
+          "location": "Trường An",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 3,
+          "notes": ""
+        },
+        "tn-ng-khng": {
+          "location": "Hoa Quả Sơn",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 9,
+          "notes": ""
+        }
+      },
+      "notes": ""
+    },
+    "ch02": {
+      "timestamp": "2026-03-10T21:49:50.810Z",
+      "characterStates": {
+        "trn-huyn-trang": {
+          "location": "Trường An",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 3,
+          "notes": ""
+        },
+        "tn-ng-khng": {
+          "location": "Hoa Quả Sơn",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 9,
+          "notes": ""
+        }
+      },
+      "notes": ""
+    }
+  }
+}

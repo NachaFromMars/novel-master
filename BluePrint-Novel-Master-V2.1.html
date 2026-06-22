@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novel Master V2.1 Blueprint</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#F5F0EB;--card:#FFFDF9;--accent:#C9A96E;--danger:#8B1A2F;
+--calm:#B8C9C0;--depth:#2C2C2C;--border:#E8E0D5;--shadow:rgba(44,44,44,.08);
+--pass:#2E7D32;--fail:#C62828;--warn:#E65100;--info:#1565C0;
+}
+body{font-family:'Noto Serif','Georgia',serif;background:var(--bg);color:var(--depth);line-height:1.7;padding:0}
+.hero{background:linear-gradient(135deg,var(--depth) 0%,#4A3728 50%,var(--danger) 100%);color:#fff;padding:60px 40px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(201,169,110,.15) 0%,transparent 60%);animation:pulse 8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.hero h1{font-size:2.8em;letter-spacing:2px;margin-bottom:10px;position:relative}
+.hero .version{font-size:1.1em;color:var(--accent);font-weight:700;letter-spacing:3px}
+.hero .subtitle{font-size:1em;opacity:.85;margin-top:15px;font-style:italic}
+.hero .author{margin-top:20px;font-size:.95em;opacity:.7}
+.container{max-width:1100px;margin:0 auto;padding:30px 20px}
+h2{font-size:1.6em;color:var(--danger);border-bottom:3px solid var(--accent);padding-bottom:8px;margin:40px 0 20px;letter-spacing:1px}
+h3{font-size:1.2em;color:var(--depth);margin:25px 0 12px;padding-left:15px;border-left:4px solid var(--accent)}
+h4{font-size:1.05em;color:var(--danger);margin:18px 0 8px}
+p{margin:8px 0}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px;margin:16px 0;box-shadow:0 2px 12px var(--shadow)}
+.card.highlight{border-left:5px solid var(--accent)}
+.card.danger{border-left:5px solid var(--danger)}
+.card.pass{border-left:5px solid var(--pass)}
+.card.info{border-left:5px solid var(--info)}
+.card.warn{border-left:5px solid var(--warn)}
+.badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:.8em;font-weight:700;letter-spacing:1px;margin:2px 4px}
+.badge.phase{background:var(--accent);color:#fff}
+.badge.gate{background:var(--danger);color:#fff}
+.badge.skill{background:var(--calm);color:var(--depth)}
+.badge.new{background:#E8F5E9;color:var(--pass);border:1px solid var(--pass)}
+.badge.module{background:#E3F2FD;color:var(--info);border:1px solid var(--info)}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:.92em}
+th{background:var(--depth);color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid var(--border)}
+tr:nth-child(even){background:rgba(201,169,110,.06)}
+tr:hover{background:rgba(201,169,110,.12)}
+.flow{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:20px 0}
+.flow-item{background:var(--card);border:2px solid var(--accent);border-radius:10px;padding:14px 20px;text-align:center;min-width:120px;position:relative;font-weight:600;font-size:.9em}
+.flow-item.active{background:var(--accent);color:#fff}
+.flow-item.danger-flow{border-color:var(--danger);background:rgba(139,26,47,.08)}
+.flow-arrow{display:flex;align-items:center;font-size:1.5em;color:var(--accent);font-weight:700}
+.beat-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0;padding:16px;background:rgba(201,169,110,.08);border-radius:10px}
+.beat-step{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px 16px;font-size:.88em;position:relative}
+.beat-step.write{border-left:4px solid var(--info)}
+.beat-step.review{border-left:4px solid var(--accent)}
+.beat-step.decide{border-left:4px solid var(--pass)}
+.beat-step.fail{border-left:4px solid var(--fail)}
+.beat-arrow{font-size:1.2em;color:var(--accent)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0}
+.stat-box{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;text-align:center}
+.stat-box .num{font-size:2em;color:var(--danger);font-weight:700}
+.stat-box .label{font-size:.85em;color:#888;margin-top:4px}
+.epub-structure{background:var(--card);border:2px solid var(--accent);border-radius:12px;overflow:hidden;margin:20px 0}
+.epub-section{padding:16px 24px;border-bottom:1px solid var(--border)}
+.epub-section:last-child{border-bottom:none}
+.epub-section h4{margin:0 0 8px;color:var(--danger)}
+.epub-section ul{padding-left:20px;margin:4px 0}
+.epub-section li{margin:4px 0;font-size:.92em}
+.timeline{position:relative;padding-left:40px;margin:20px 0}
+.timeline::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:3px;background:var(--accent)}
+.tl-item{position:relative;margin:20px 0;padding:16px 20px;background:var(--card);border:1px solid var(--border);border-radius:10px}
+.tl-item::before{content:'';position:absolute;left:-30px;top:20px;width:14px;height:14px;background:var(--accent);border-radius:50%;border:3px solid var(--bg)}
+.tl-item.critical::before{background:var(--danger)}
+.tl-item .tl-label{font-weight:700;color:var(--danger);font-size:.9em}
+.quality-bar{height:24px;background:#eee;border-radius:12px;overflow:hidden;margin:6px 0}
+.quality-fill{height:100%;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.75em;font-weight:700}
+.sep{border:none;border-top:2px dashed var(--border);margin:40px 0}
+.toc{background:var(--card);border:2px solid var(--accent);border-radius:12px;padding:24px 30px;margin:30px 0}
+.toc h3{border:none;padding:0;margin:0 0 12px;color:var(--danger)}
+.toc ul{list-style:none;padding:0}
+.toc li{padding:6px 0;border-bottom:1px dotted var(--border);font-size:.95em}
+.toc li:last-child{border:none}
+.toc a{color:var(--depth);text-decoration:none;font-weight:600}
+.toc a:hover{color:var(--danger)}
+.toc .toc-num{color:var(--accent);font-weight:700;margin-right:8px}
+.footer{text-align:center;padding:40px;color:#999;font-size:.85em;border-top:2px solid var(--border);margin-top:40px}
+@media(max-width:600px){
+.hero{padding:30px 16px}.hero h1{font-size:1.8em}
+.container{padding:16px 12px}
+.flow{flex-direction:column;align-items:center}
+.flow-arrow{transform:rotate(90deg)}
+.stat-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+<div class="version">V 2 . 1</div>
+<h1>Novel Master Blueprint</h1>
+<div class="subtitle">All-in-One Novel Quality Guardian &amp; Forge Orchestrator</div>
+<div class="subtitle">10-Phase Pipeline &middot; 3-Version Beat Forge &middot; 7-Angle Review &middot; 23 Skills &middot; 7 Modules</div>
+<div class="author">by Tieu Tam &middot; March 2026</div>
+</div>
+
+<div class="container">
+
+<!-- STATS -->
+<div class="stat-grid">
+<div class="stat-box"><div class="num">10</div><div class="label">Pipeline Phases</div></div>
+<div class="stat-box"><div class="num">3</div><div class="label">Versions / Beat</div></div>
+<div class="stat-box"><div class="num">7</div><div class="label">Review Angles</div></div>
+<div class="stat-box"><div class="num">23</div><div class="label">Coordinated Skills</div></div>
+<div class="stat-box"><div class="num">7</div><div class="label">Engine Modules</div></div>
+<div class="stat-box"><div class="num">9/10</div><div class="label">Quality Gate</div></div>
+<div class="stat-box"><div class="num">16</div><div class="label">Blueprint Sections</div></div>
+<div class="stat-box"><div class="num">30+</div><div class="label">Continuity Rules</div></div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+<h3>Muc Luc</h3>
+<ul>
+<li><span class="toc-num">A</span><a href="#rules">Quy Tac Viet (Forge Rules A1-A5)</a></li>
+<li><span class="toc-num">B</span><a href="#review">Quy Tac Tham Dinh (3-Version Beat Forge)</a></li>
+<li><span class="toc-num">C</span><a href="#chapter">Hoan Thanh Chuong (C1-C7)</a></li>
+<li><span class="toc-num">D</span><a href="#edit">Bien Tap Sieu Ky</a></li>
+<li><span class="toc-num">E</span><a href="#epub">EPUB Premium (Moi Arc = 1 Cuon)</a></li>
+<li><span class="toc-num">F</span><a href="#pipeline">Pipeline 10 Phase (Chi Tiet)</a></li>
+<li><span class="toc-num">G</span><a href="#gates">Quality Gates Tong Hop</a></li>
+<li><span class="toc-num">H</span><a href="#skills">23 Skill Coordination Map</a></li>
+<li><span class="toc-num">I</span><a href="#modules">7 Engine Modules</a></li>
+<li><span class="toc-num">J</span><a href="#beat-detail">Beat Forge Chi Tiet (Flowchart)</a></li>
+<li><span class="toc-num">K</span><a href="#arc-flow">Arc Lifecycle (Tu Outline Den EPUB)</a></li>
+<li><span class="toc-num">L</span><a href="#triggers">Trigger Auto-Detection (9 Patterns)</a></li>
+<li><span class="toc-num">M</span><a href="#router">Router Logic (Keywords &rarr; Module)</a></li>
+<li><span class="toc-num">N</span><a href="#cli">CLI Usage (Tat Ca Lenh)</a></li>
+<li><span class="toc-num">O</span><a href="#data">Data Layer (Cau Truc Thu Muc)</a></li>
+<li><span class="toc-num">P</span><a href="#retry">Retry Logic Chi Tiet (Beat + Chapter + Arc)</a></li>
+</ul>
+</div>
+
+<hr class="sep">
+
+<!-- A: FORGE RULES -->
+<h2 id="rules">A. Quy Tac Viet (Forge Rules)</h2>
+<p>Bat bien. Ap dung cho MOI du an tieu thuyet.</p>
+
+<div class="card highlight">
+<h4>A1 &mdash; Don Lap 400-600 Tu / Beat</h4>
+<p>Moi beat la mot don vi viet doc lap, tu hoan chinh. Toi thieu 400 tu, toi da 600 tu. TUYET DOI khong vuot. Moi chuong gom 5 beats, tong khoang 2000-3000 tu.</p>
+</div>
+
+<div class="card highlight">
+<h4>A2 &mdash; Khong Markdown Trong Prose</h4>
+<p>Khong dung ky tu markdown: # * ** _ --- &gt;. Khong bullet points, khong lists, khong tables. Khong dau gach dai (&mdash;). Chi van xuoi thuan tuy voi dau cau tu nhien.</p>
+</div>
+
+<div class="card highlight">
+<h4>A3 &mdash; Khong Dau Vet AI</h4>
+<p>Khong dung tu AI hay dung: brilliant, stunning, delve, tapestry, journey. Khong lap pattern 3 cau lien tiep cung cau truc. Khong cau ket sao rong. Phai show, khong tell. Humanize bat buoc sau moi beat.</p>
+</div>
+
+<div class="card highlight">
+<h4>A4 &mdash; Giong Van Nhat Quan</h4>
+<p>Giong ke tuy project (VD: Trong Sinh = ngoi nhat "tao", hai den 70%). Giong phai nhat quan tu beat dau toi cuoi, toan bo chuong. Moi project co 1 Style Guide, tao 1 lan duy nhat (Phase 0).</p>
+</div>
+
+<div class="card highlight">
+<h4>A5 &mdash; Moi Nhan Vat Mot Giong Rieng</h4>
+<p>Dialogue moi nhan vat co speech pattern khac biet. Hai nhan vat noi giong nhau la FAIL (similarity &gt; 40% = FAIL).</p>
+</div>
+
+<hr class="sep">
+
+<!-- B: REVIEW RULES -->
+<h2 id="review">B. Quy Tac Tham Dinh (3-Version Beat Forge)</h2>
+
+<div class="card info">
+<h4>B1 &mdash; Moi Beat Viet 3 Phien Ban Doc Lap <span class="badge new">NEW V2.1</span></h4>
+<p>Moi beat &rarr; forge 3 phien ban (#1, #2, #3) viet LAN LUOT.</p>
+<p>Moi phien ban viet DOC LAP: co the THAM CUU cac ban truoc (biet no viet gi) nhung KHONG DUNG LAM NGUYEN LIEU viet (khong copy/paste, khong dung cau tu ban truoc).</p>
+<p>3 phien ban phai co approach/goc nhin/cach mo KHAC NHAU &mdash; KHONG PHAI 3 ban gan giong nhau.</p>
+<p><strong>Thu tu:</strong> Viet #1 &rarr; Viet #2 (tham cuu #1) &rarr; Viet #3 (tham cuu #1, #2)</p>
+</div>
+
+<div class="card info">
+<h4>B2 &mdash; Tham Dinh 3 Phien Ban + Chon/Mix <span class="badge new">NEW V2.1</span></h4>
+
+<p><strong>Buoc 1:</strong> Tham dinh da dien 7 goc cho TUNG phien ban:</p>
+<table>
+<tr><th>#</th><th>Goc</th><th>Kiem Tra</th><th>Trong So</th></tr>
+<tr><td>1</td><td><strong>Prose Quality</strong></td><td>Cau chu muot? Nhip dieu? Tu vung phong phu?</td><td>20%</td></tr>
+<tr><td>2</td><td><strong>Consistency</strong></td><td>Nhat quan voi Bible? Ten, dia danh, trang thai dung?</td><td>20%</td></tr>
+<tr><td>3</td><td><strong>Character Voice</strong></td><td>Nhan vat noi dung giong? Hanh dong dung tinh cach?</td><td>15%</td></tr>
+<tr><td>4</td><td><strong>Pacing</strong></td><td>Beat nhanh/cham phu hop vi tri trong chuong/arc?</td><td>15%</td></tr>
+<tr><td>5</td><td><strong>AI Trace</strong></td><td>Con dau vet AI? Pattern lap? Tu cam?</td><td>10%</td></tr>
+<tr><td>6</td><td><strong>Engagement</strong></td><td>Doc hap dan? Muon doc tiep? Hook cuoi beat?</td><td>10%</td></tr>
+<tr><td>7</td><td><strong>Markdown &amp; Format</strong></td><td>0% markdown (# * ** _ --- &gt;)? 0% dau gach dai? Prose thuan?</td><td>10%</td></tr>
+</table>
+
+<p><strong>Buoc 2 &mdash; Quyet Dinh:</strong></p>
+<ul>
+<li>Neu 1 ban vuot troi ro rang (cach biet &ge; 0.5) &rarr; CHON ban do</li>
+<li>Neu nhieu ban co highlights khac nhau &rarr; COMBINE: lay doan hay nhat tu moi ban, ghep thanh phien ban BEST</li>
+<li>Khi combine: phai dam bao flow tu nhien, transitions muot, khong lo cho noi</li>
+</ul>
+
+<p><strong>Buoc 3 &mdash; Tham Dinh FINAL:</strong></p>
+<ul>
+<li>Chay lai 7 goc tham dinh tren ban FINAL</li>
+<li>BAT BUOC loai bo markdown + dau vet AI trong buoc nay luon (khong doi Phase rieng)</li>
+<li>Clean xong &rarr; cham diem FINAL</li>
+</ul>
+</div>
+
+<div class="card danger">
+<h4>B3 &mdash; Diem PASS: &ge; 9/10</h4>
+<p>Ban FINAL dat 9 tro len &rarr; viet beat tiep.</p>
+<p>Duoi 9 &rarr; viet lai 3 phien ban moi (full cycle).</p>
+<p>Toi da 2 full cycles (6 phien ban tong) &rarr; bao anh Nang can thiep.</p>
+<p>Diem tong = trung binh co trong so 7 goc.</p>
+</div>
+
+<hr class="sep">
+
+<!-- J: BEAT FORGE DETAIL FLOWCHART -->
+<h2 id="beat-detail">J. Beat Forge Chi Tiet (Flowchart)</h2>
+<p>Day la quy trinh XU LY MOI BEAT tu dau den cuoi:</p>
+
+<div class="beat-flow">
+<div class="beat-step write"><strong>1. Viet #1</strong><br>400-600 tu<br>Tu do theo outline</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step write"><strong>2. Viet #2</strong><br>400-600 tu<br>Tham cuu #1<br>Doi goc tiep can</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step write"><strong>3. Viet #3</strong><br>400-600 tu<br>Tham cuu #1+#2<br>Approach khac</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>4. Tham Dinh</strong><br>7 goc x 3 ban<br>Cham diem tung ban</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step decide"><strong>5. Quyet Dinh</strong><br>Chon BEST<br>hoac COMBINE</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>6. Clean</strong><br>Loai Markdown<br>Loai AI trace<br>Loai dau gach dai</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>7. Tham Dinh FINAL</strong><br>7 goc lan nua<br>Cham diem FINAL</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step decide"><strong>8. GATE</strong><br>&ge; 9/10 &rarr; PASS<br>&lt; 9 &rarr; RETRY</div>
+</div>
+
+<div class="card warn">
+<h4>Retry Logic</h4>
+<p><strong>FAIL:</strong> &lt; 9/10 &rarr; Viet lai 3 phien ban moi (Cycle 2)</p>
+<p><strong>Cycle 2 FAIL:</strong> Da dung 6 phien ban &rarr; ESCALATE (bao anh Nang can thiep)</p>
+<p><strong>Luu y:</strong> Moi cycle la 3 ban MOI HOAN TOAN, khong sua ban cu.</p>
+</div>
+
+<div class="card pass">
+<h4>Tong Ket 1 Beat</h4>
+<table>
+<tr><th>Metric</th><th>Gia Tri</th></tr>
+<tr><td>So phien ban toi thieu</td><td>3 (1 cycle)</td></tr>
+<tr><td>So phien ban toi da</td><td>6 (2 cycles)</td></tr>
+<tr><td>Goc tham dinh</td><td>7 goc (Prose, Consistency, Voice, Pacing, AI, Engagement, Markdown)</td></tr>
+<tr><td>Diem PASS</td><td>&ge; 9.0 / 10.0</td></tr>
+<tr><td>Markdown tolerance</td><td>0%</td></tr>
+<tr><td>AI trace tolerance</td><td>0%</td></tr>
+<tr><td>Tu/beat</td><td>400-600</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- C: CHAPTER COMPLETION -->
+<h2 id="chapter">C. Hoan Thanh Chuong (Sau 5 Beats PASS)</h2>
+
+<table>
+<tr><th>Buoc</th><th>Noi Dung</th><th>Skill</th></tr>
+<tr><td>C1</td><td>Ghep 5 beats PASS thanh chuong, kiem tra transitions giua cac beat</td><td>&mdash;</td></tr>
+<tr><td>C2</td><td>Novel Guardian Scan: 0 critical, pacing OK, style nhat quan</td><td>novel-master check/prose/pace</td></tr>
+<tr><td>C3</td><td>CW Story Critique: phe binh pacing, character arcs, dialogue</td><td>cw-story-critique</td></tr>
+<tr><td>C4</td><td>Humanize Final: 0% markdown, 0% AI trace (double-check)</td><td>humanize</td></tr>
+<tr><td>C5</td><td>Gui file FINAL len Telegram ngay + bao cao tom tat</td><td>message tool</td></tr>
+<tr><td>C6</td><td>Cap nhat Bible sync + wiki update</td><td>novel-master bible + cw-official-docs</td></tr>
+<tr><td>C7</td><td>Auto spawn chuong tiep, khong dung giua chung</td><td>mula-ralph / sub-agent</td></tr>
+</table>
+
+<hr class="sep">
+
+<!-- D: EDITING -->
+<h2 id="edit">D. Bien Tap Sieu Ky (Khi Toan Bo DONE)</h2>
+
+<div class="card highlight">
+<p><strong>D1:</strong> Ra soat tung beat (400-600 tu moi lan), doc ky toan bo truyen</p>
+<p><strong>D2:</strong> Giong nhat quan toan bo, tu dau toi cuoi. Drift &gt; 20% &rarr; sua</p>
+<p><strong>D3:</strong> Scan toan bo, fix mau thuan: timeline, power levels, vi tri, vat pham</p>
+<p><strong>D4:</strong> Humanize pass cuoi: 0% AI trace toan bo</p>
+</div>
+
+<hr class="sep">
+
+<!-- E: EPUB PREMIUM -->
+<h2 id="epub">E. EPUB Premium (Moi Arc = 1 Cuon) <span class="badge new">NEW V2.1</span></h2>
+
+<div class="card info">
+<h4>Chien Luoc Xuat Ban</h4>
+<p>Moi arc hoan thanh &rarr; duc 1 cuon EPUB Premium rieng.</p>
+<p><strong>Ban le</strong> tung cuon (arc) &rarr; de mua, gia thap, vao nhanh.</p>
+<p><strong>Ban combo</strong> ca bo &rarr; khuyen mai, gom tron series.</p>
+<p>VD: Arc 1 (Ch.1-20) = Quyen 1, Arc 2 (Ch.21-40) = Quyen 2...</p>
+</div>
+
+<div class="epub-structure">
+<div class="epub-section" style="background:rgba(139,26,47,.06)">
+<h4>Bia (Cover)</h4>
+<ul>
+<li><strong>Bia truoc:</strong> Minh hoa phu hop NOI DUNG arc (nhan vat chinh, canh chinh)</li>
+<li><strong>Gay sach:</strong> Ten series + so arc + tac gia</li>
+<li><strong>Bia sau:</strong> Tom tat arc + blurb + QR Code</li>
+</ul>
+</div>
+<div class="epub-section">
+<h4>Front Matter</h4>
+<ul>
+<li>Series Title Page</li>
+<li>Arc Title Page</li>
+<li>Copyright &amp; Legal</li>
+<li>Dedication</li>
+<li>Author's Note (Loi Tac Gia)</li>
+<li>Table of Contents (tu dong)</li>
+<li>Map / Ban Do (neu arc co di chuyen dia ly)</li>
+</ul>
+</div>
+<div class="epub-section">
+<h4>Body &mdash; Chapters</h4>
+<ul>
+<li>Prose thuan tuy, khong markdown</li>
+<li>Drop caps do tham (#8B1A2F) dau moi chuong</li>
+<li>Font Serif (Noto Serif), line-height 1.7</li>
+<li>Bang mau: Trang sua #F5F0EB, Vang ho phach #C9A96E, Do tham #8B1A2F</li>
+</ul>
+</div>
+<div class="epub-section">
+<h4>Back Matter</h4>
+<ul>
+<li>Afterword Arc (Loi Bat cho arc)</li>
+<li>Character Guide (chi nhan vat XUAT HIEN trong arc &mdash; khong spoil arc sau)</li>
+<li>Glossary (Thuat Ngu)</li>
+<li>Timeline Arc (Su kien chinh trong arc)</li>
+<li>Acknowledgments</li>
+<li>About Author + QR Code &rarr; Facebook Tieu Tam</li>
+<li>Teaser Arc Tiep Theo (1 trang cliffhanger)</li>
+</ul>
+</div>
+<div class="epub-section" style="background:rgba(201,169,110,.06)">
+<h4>Nguyen Lieu Can Chuan Bi Moi Arc</h4>
+<ul>
+<li><strong>Bia rieng:</strong> Minh hoa phu hop noi dung arc</li>
+<li><strong>3-5 hinh minh hoa:</strong> Scene quan trong trong arc</li>
+<li><strong>Ban do:</strong> Neu arc co di chuyen dia ly</li>
+<li><strong>Character Guide:</strong> Chi nhan vat trong arc</li>
+<li><strong>Timeline:</strong> Su kien chinh arc</li>
+<li><strong>Teaser:</strong> 1 trang hook arc tiep</li>
+</ul>
+</div>
+</div>
+
+<div class="card">
+<h4>Thiet Ke Ky Thuat</h4>
+<table>
+<tr><th>Thuoc Tinh</th><th>Gia Tri</th></tr>
+<tr><td>Dinh dang</td><td>EPUB3</td></tr>
+<tr><td>Font</td><td>Noto Serif</td></tr>
+<tr><td>Line-height</td><td>1.7</td></tr>
+<tr><td>Drop caps</td><td>Do tham #8B1A2F</td></tr>
+<tr><td>Nen</td><td>Trang sua #F5F0EB</td></tr>
+<tr><td>Accent</td><td>Vang ho phach #C9A96E</td></tr>
+<tr><td>Tuong thich</td><td>Kindle, Kobo, Apple Books, Google Play Books</td></tr>
+<tr><td>QR Code</td><td>facebook.com/profile.php?id=61588560594683</td></tr>
+<tr><td>Tac gia</td><td>Tieu Tam</td></tr>
+<tr><td>Danh so</td><td>"Trong Sinh Duong Tam Tang &mdash; Quyen X: [Ten Arc]"</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- F: 10 PHASE PIPELINE -->
+<h2 id="pipeline">F. Pipeline 10 Phase (Chi Tiet)</h2>
+
+<div class="flow">
+<div class="flow-item active">P0<br>SETUP</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P1<br>PLAN</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P2<br>PRE-FORGE</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item danger-flow">P3<br>FORGE</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P4<br>GUARD</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P5<br>REVIEW</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P6<br>SHIP</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P7<br>ARC REVIEW</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item">P8<br>BIEN TAP</div>
+<div class="flow-arrow">&rarr;</div>
+<div class="flow-item active">P9<br>EPUB</div>
+</div>
+
+<!-- PHASE 0 -->
+<div class="timeline">
+
+<div class="tl-item">
+<div class="tl-label">PHASE 0: SETUP (1 lan duy nhat / project)</div>
+<p><span class="badge skill">cw-style-skill-creator</span> <span class="badge skill">novel-master bible</span> <span class="badge skill">deep-research-pro</span> <span class="badge skill">diagram</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Output</th></tr>
+<tr><td>1</td><td>Research boi canh (neu can)</td><td>research-notes.md</td></tr>
+<tr><td>2</td><td>Tao Style Guide (phan tich chapters mau)</td><td>style-guide.md</td></tr>
+<tr><td>3</td><td>Khoi tao Bible + project</td><td>bible.json</td></tr>
+<tr><td>4</td><td>Tao tracker: tien do, word count, quality scores</td><td>tracker.json</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Style Guide ton tai + Bible initialized</p>
+</div>
+
+<!-- PHASE 1 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 1: PLAN (moi arc)</div>
+<p><span class="badge skill">cw-brainstorming</span> <span class="badge skill">brainstorm</span> <span class="badge skill">think-cog</span> <span class="badge skill">deep-research-pro</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Output</th></tr>
+<tr><td>1</td><td>Research boi canh lich su/dia ly (neu can)</td><td>research.md</td></tr>
+<tr><td>2</td><td>Brainstorm outline arc: conflict chinh + twist + character arcs</td><td>outline draft</td></tr>
+<tr><td>3</td><td>Chia chuong: 5 beats/chuong, tom tat moi beat</td><td>outline-arcX.md</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> &ge; 3 conflict + &ge; 1 twist per arc</p>
+</div>
+
+<!-- PHASE 2 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 2: PRE-FORGE (moi chuong)</div>
+<p><span class="badge skill">novel-master bible</span> <span class="badge skill">cw-brainstorming</span> <span class="badge skill">think-cog</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Output</th></tr>
+<tr><td>1</td><td>Bible check: nhan vat o dau, trang thai, power level</td><td>Bible snapshot</td></tr>
+<tr><td>2</td><td>Pace suggest: nhip ly tuong cho chuong tiep</td><td>Pacing recommendation</td></tr>
+<tr><td>3</td><td>Detail 5 beats cu the</td><td>beats-chXX.md</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Bible snapshot taken + 5 beats detailed</p>
+</div>
+
+<!-- PHASE 3 -->
+<div class="tl-item critical">
+<div class="tl-label">PHASE 3: FORGE (moi beat) <span class="badge new">UPGRADED V2.1</span></div>
+<p><span class="badge skill">omni-forge-novel</span> <span class="badge skill">cw-prose-writing</span> <span class="badge skill">story-cog</span> <span class="badge skill">humanize</span></p>
+
+<p><strong>Moi beat chay qua 3-Version Gauntlet:</strong></p>
+
+<table>
+<tr><th>Step</th><th>Action</th><th>Chi Tiet</th></tr>
+<tr><td>3.1</td><td>Viet Phien Ban #1</td><td>400-600 tu, tu do theo outline, 0 markdown</td></tr>
+<tr><td>3.2</td><td>Viet Phien Ban #2</td><td>400-600 tu, tham cuu #1 nhung KHONG dung lam nguyen lieu, doi goc tiep can</td></tr>
+<tr><td>3.3</td><td>Viet Phien Ban #3</td><td>400-600 tu, tham cuu #1+#2 nhung KHONG dung lam nguyen lieu, approach khac</td></tr>
+<tr><td>3.4</td><td>Tham Dinh 3 Ban</td><td>7 goc x 3 phien ban = 21 diem so</td></tr>
+<tr><td>3.5</td><td>Chon/Combine</td><td>Ban tot nhat HOAC combine highlights &rarr; phien ban BEST</td></tr>
+<tr><td>3.6</td><td>Clean BEST</td><td>Loai markdown + AI trace + dau gach dai NGAY</td></tr>
+<tr><td>3.7</td><td>Tham Dinh FINAL</td><td>7 goc tren ban BEST da clean</td></tr>
+<tr><td>3.8</td><td>GATE</td><td>&ge; 9/10 &rarr; PASS &rarr; beat tiep. &lt; 9 &rarr; RETRY (max 2 cycles)</td></tr>
+</table>
+
+<p><strong>Lap cho 5 beats = 1 chuong hoan chinh.</strong></p>
+<p><span class="badge gate">GATE:</span> Moi beat &ge; 9/10 tham dinh da dien 7 goc</p>
+</div>
+
+<!-- PHASE 4 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 4: GUARD (moi chuong)</div>
+<p><span class="badge skill">novel-master</span> (check + prose + pace + voice)</p>
+<table>
+<tr><th>#</th><th>Action</th><th>Tieu Chuan</th></tr>
+<tr><td>1</td><td>Ghep 5 beats &rarr; chuong hoan chinh</td><td>Transitions muot</td></tr>
+<tr><td>2</td><td>nm check scan</td><td>0 critical issues</td></tr>
+<tr><td>3</td><td>nm prose check</td><td>Style drift &lt; 20%</td></tr>
+<tr><td>4</td><td>nm pace record</td><td>Nhip OK, no violations</td></tr>
+<tr><td>5</td><td>nm voice check</td><td>Giong nhat quan</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> 0 critical, &le; 2 warnings, pacing OK, drift &lt; 20%</p>
+</div>
+
+<!-- PHASE 5 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 5: REVIEW (moi chuong)</div>
+<p><span class="badge skill">cw-story-critique</span> <span class="badge skill">mula-audit</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Chi Tiet</th></tr>
+<tr><td>1</td><td>CW Story Critique</td><td>Feedback: pacing, arcs, dialogue</td></tr>
+<tr><td>2</td><td>Multi-agent review (chuong quan trong)</td><td>mula-audit 6 reviewers</td></tr>
+<tr><td>3</td><td>Final prose read</td><td>0% markdown + 0% AI trace (double-check)</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Critique PASS + 0% markdown + 0% AI trace</p>
+</div>
+
+<!-- PHASE 6 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 6: SHIP (moi chuong)</div>
+<p><span class="badge skill">message tool</span> <span class="badge skill">novel-master bible</span> <span class="badge skill">cw-official-docs</span> <span class="badge skill">mula-ralph</span></p>
+<table>
+<tr><th>#</th><th>Action</th></tr>
+<tr><td>1</td><td>Gui file FINAL len Telegram + bao cao tom tat</td></tr>
+<tr><td>2</td><td>Bible sync: cap nhat nhan vat/su kien moi</td></tr>
+<tr><td>3</td><td>Wiki update</td></tr>
+<tr><td>4</td><td>Tracker: cap nhat tien do</td></tr>
+<tr><td>5</td><td>Auto spawn chuong tiep &rarr; quay lai Phase 2</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Gui Telegram thanh cong + Bible synced</p>
+</div>
+
+<!-- PHASE 7 -->
+<div class="tl-item critical">
+<div class="tl-label">PHASE 7: ARC REVIEW (moi arc xong)</div>
+<p><span class="badge skill">novel-master</span> (full scan) <span class="badge skill">cw-story-critique</span> <span class="badge skill">self-improving-agent</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Chi Tiet</th></tr>
+<tr><td>1</td><td>nm check scan-all</td><td>Tong quan continuity toan arc</td></tr>
+<tr><td>2</td><td>nm prose drift</td><td>Style drift toan arc</td></tr>
+<tr><td>3</td><td>nm pace curve</td><td>Tension curve &mdash; phat hien monotone</td></tr>
+<tr><td>4</td><td>nm voice report</td><td>Voice differentiation</td></tr>
+<tr><td>5</td><td>CW Story Critique</td><td>Review toan arc</td></tr>
+<tr><td>6</td><td>Lessons learned</td><td>Luu memory</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> 0 critical across arc, pacing curve healthy</p>
+<p><strong>PASS &rarr; Trigger Phase 9 (EPUB Arc)</strong></p>
+</div>
+
+<!-- PHASE 8 -->
+<div class="tl-item">
+<div class="tl-label">PHASE 8: BIEN TAP SIEU KY (khi toan bo DONE)</div>
+<p><span class="badge skill">novel-master</span> (all modules) <span class="badge skill">humanize</span></p>
+<table>
+<tr><th>#</th><th>Action</th></tr>
+<tr><td>1</td><td>Ra soat tung beat (400-600 tu/lan)</td></tr>
+<tr><td>2</td><td>Giong nhat quan toan bo</td></tr>
+<tr><td>3</td><td>nm check scan-all &rarr; fix ALL issues</td></tr>
+<tr><td>4</td><td>Pacing curve toan truyen &rarr; balance</td></tr>
+<tr><td>5</td><td>Style drift check &rarr; sua</td></tr>
+<tr><td>6</td><td>Humanize pass cuoi &rarr; 0% AI trace</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Giong nhat quan, 0 plot hole, 0 AI trace</p>
+</div>
+
+<!-- PHASE 9 -->
+<div class="tl-item critical">
+<div class="tl-label">PHASE 9: EPUB PREMIUM EXPORT (moi arc hoan thanh) <span class="badge new">NEW V2.1</span></div>
+<p><span class="badge skill">novel-master publish</span> <span class="badge skill">qr-code-generator</span> <span class="badge skill">book-cover-design</span> <span class="badge skill">edge-tts</span> <span class="badge skill">image-edit</span></p>
+<table>
+<tr><th>#</th><th>Action</th><th>Chi Tiet</th></tr>
+<tr><td>1</td><td>Chuan bi hinh anh</td><td>Bia arc + 3-5 minh hoa scene + ban do</td></tr>
+<tr><td>2</td><td>Generate bia arc</td><td>AI hoac cung cap &rarr; book-cover-design</td></tr>
+<tr><td>3</td><td>Build Front Matter</td><td>Series title, arc title, copyright, dedication, TOC, map</td></tr>
+<tr><td>4</td><td>Build Body</td><td>Chapters + drop caps</td></tr>
+<tr><td>5</td><td>Build Back Matter</td><td>Afterword, character guide arc-only, glossary, timeline, QR, teaser</td></tr>
+<tr><td>6</td><td>nm publish epub</td><td>EPUB3 + custom CSS</td></tr>
+<tr><td>7</td><td>nm publish audiobook</td><td>(Optional) Voice: vi-VN-HoaiMyNeural</td></tr>
+<tr><td>8</td><td>Test tren reader</td><td>Kindle, Kobo, Apple Books</td></tr>
+<tr><td>9</td><td>Gui EPUB len Telegram</td><td>File + bao cao</td></tr>
+</table>
+<p><span class="badge gate">GATE:</span> Format dung, doc tot, QR hoat dong, hinh anh render OK</p>
+<p><strong>Cuoi series:</strong> nm publish epub --bundle &rarr; gom tat ca arc thanh Toan Tap</p>
+</div>
+
+</div><!-- end timeline -->
+
+<hr class="sep">
+
+<!-- G: QUALITY GATES -->
+<h2 id="gates">G. Quality Gates Tong Hop</h2>
+
+<table>
+<tr><th>Phase</th><th>Gate</th><th>Tieu Chuan PASS</th></tr>
+<tr><td><span class="badge phase">Plan</span></td><td>Outline</td><td>&ge; 3 conflict + &ge; 1 twist per arc</td></tr>
+<tr><td><span class="badge phase">Forge</span></td><td>Moi beat</td><td>3 phien ban &rarr; chon/mix BEST &rarr; &ge; 9/10 (7 goc, gom markdown+AI clean)</td></tr>
+<tr><td><span class="badge phase">Guard</span></td><td>Chuong</td><td>0 critical, &le; 2 warnings, pacing OK, drift &lt; 20%</td></tr>
+<tr><td><span class="badge phase">Review</span></td><td>Critique</td><td>Critique PASS + 0% markdown + 0% AI trace</td></tr>
+<tr><td><span class="badge phase">Ship</span></td><td>File</td><td>Gui Telegram + Bible synced</td></tr>
+<tr><td><span class="badge phase">Arc Review</span></td><td>Arc</td><td>0 critical toan arc, pacing curve healthy</td></tr>
+<tr><td style="background:rgba(139,26,47,.08)"><span class="badge gate">EPUB Arc</span></td><td>Moi arc</td><td>Duc EPUB Premium rieng: bia + hinh + test reader</td></tr>
+<tr><td><span class="badge phase">Bien Tap</span></td><td>Toan bo</td><td>Giong nhat quan, 0 plot hole, 0 AI trace</td></tr>
+<tr><td style="background:rgba(139,26,47,.08)"><span class="badge gate">EPUB Bundle</span></td><td>Cuoi series</td><td>Gom tat ca arc &rarr; Toan Tap</td></tr>
+</table>
+
+<hr class="sep">
+
+<!-- H: 23 SKILLS -->
+<h2 id="skills">H. 23 Skill Coordination Map</h2>
+
+<table>
+<tr><th>#</th><th>Skill</th><th>Vai Tro</th><th>Phase</th></tr>
+<tr><td>01</td><td><strong>omni-forge-novel</strong></td><td>Render prose chinh (FORGE+C 2.0, Nacharium)</td><td>P3</td></tr>
+<tr><td>02</td><td><strong>novel-master</strong> (self)</td><td>Scan, Bible, pacing, style, voice, publish</td><td>P0,2,4,6,7,8,9</td></tr>
+<tr><td>03</td><td><strong>cw-brainstorming</strong></td><td>Brainstorm outline + beats</td><td>P1,2</td></tr>
+<tr><td>04</td><td><strong>cw-prose-writing</strong></td><td>Apply style guide khi viet</td><td>P3</td></tr>
+<tr><td>05</td><td><strong>cw-story-critique</strong></td><td>Phe binh chat luong</td><td>P5,7</td></tr>
+<tr><td>06</td><td><strong>cw-style-skill-creator</strong></td><td>Tao style guide (1 lan/project)</td><td>P0</td></tr>
+<tr><td>07</td><td><strong>cw-official-docs</strong></td><td>Wiki / character profiles</td><td>P6</td></tr>
+<tr><td>08</td><td><strong>cw-router</strong></td><td>Dieu phoi cw- skills</td><td>All</td></tr>
+<tr><td>09</td><td><strong>humanize</strong></td><td>Loai dau vet AI + markdown</td><td>P3,5,8</td></tr>
+<tr><td>10</td><td><strong>epub-generator</strong></td><td>Backup EPUB tool</td><td>P9</td></tr>
+<tr><td>11</td><td><strong>qr-code-generator</strong></td><td>Tao QR code</td><td>P9</td></tr>
+<tr><td>12</td><td><strong>book-cover-design</strong></td><td>Thiet ke bia</td><td>P9</td></tr>
+<tr><td>13</td><td><strong>story-cog</strong></td><td>Creative writing engine phu</td><td>P1,3</td></tr>
+<tr><td>14</td><td><strong>think-cog</strong></td><td>Deep reasoning cho outline/arc</td><td>P1,2</td></tr>
+<tr><td>15</td><td><strong>brainstorm</strong></td><td>Quick ideas</td><td>P1</td></tr>
+<tr><td>16</td><td><strong>translate</strong></td><td>Dich da ngu (neu can)</td><td>P9</td></tr>
+<tr><td>17</td><td><strong>deep-research-pro</strong></td><td>Nghien cuu boi canh lich su</td><td>P0,1</td></tr>
+<tr><td>18</td><td><strong>infinity-memory</strong></td><td>Bo nho dai han xuyen session</td><td>All</td></tr>
+<tr><td>19</td><td><strong>self-improving-agent</strong></td><td>Tu hoc tu loi</td><td>P7</td></tr>
+<tr><td>20</td><td><strong>mula-audit</strong></td><td>Multi-agent review (chuong quan trong)</td><td>P5,7</td></tr>
+<tr><td>21</td><td><strong>mula-forge-code</strong></td><td>7-phase pipeline (cho tool dev)</td><td>P0</td></tr>
+<tr><td>22</td><td><strong>mula-ralph</strong></td><td>Self-driving loop (auto-forge)</td><td>P3-6</td></tr>
+<tr><td>23</td><td><strong>prompt-engineering-expert</strong></td><td>Toi uu prompt khi can</td><td>P0</td></tr>
+</table>
+
+<hr class="sep">
+
+<!-- I: 7 MODULES -->
+<h2 id="modules">I. 7 Engine Modules</h2>
+
+<div class="card">
+<h4><span class="badge module">Module 1</span> Bible Manager</h4>
+<p>Quan ly Character Bible va World Bible cho toan bo project.</p>
+<p><strong>Character Bible</strong> luu: Identity, Personality, Relationships, Voice, Arc, State (per chapter).</p>
+<p><strong>World Bible</strong> luu: Locations, Magic/Power Systems, History, Items, Factions, Rules.</p>
+<p><strong>Commands:</strong> bible init, bible add, bible update, bible show, bible list, bible snapshot, bible diff, bible export</p>
+<p><strong>File:</strong> scripts/utils/bible.mjs</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 2</span> Continuity Checker</h4>
+<p>Scan chuong tim mau thuan. 30+ rules, 6 categories.</p>
+<p><strong>Severity:</strong> CRITICAL (fix truoc ship) | WARNING (fix truoc arc end) | NOTE (track)</p>
+<p><strong>Commands:</strong> check scan, check scan-all, check scan-range</p>
+<p><strong>File:</strong> scripts/utils/continuity.mjs</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 3</span> Prose Style Analyzer</h4>
+<p>Phan tich van phong qua 7 categories: Sentence, Vocabulary, Structure, Tone, POV, AI Trace, Vietnamese-specific.</p>
+<p><strong>Commands:</strong> prose baseline, prose check, prose drift</p>
+<p><strong>File:</strong> scripts/utils/prose.mjs</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 4</span> Pacing Tracker</h4>
+<p>Theo doi nhip truyen voi 6 beat types: ACTION, TENSION, REVELATION, EMOTIONAL, QUIET, TRANSITION.</p>
+<p><strong>Commands:</strong> pace record, pace curve, pace suggest, pace report</p>
+<p><strong>File:</strong> scripts/utils/pacing.mjs</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 5</span> Character Voice Manager</h4>
+<p>Dam bao moi nhan vat noi giong rieng, nhat quan. Similarity &lt; 40% giua bat ky cap nao.</p>
+<p><strong>Commands:</strong> voice add, voice build, voice check, voice compare, voice report</p>
+<p><strong>File:</strong> scripts/utils/voice.mjs</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 6</span> Publisher</h4>
+<p>EPUB Premium, PDF, HTML Reader, QR Code, Audiobook. Moi arc = 1 cuon. Bundle toan series.</p>
+<p><strong>Commands:</strong> publish epub, publish pdf, publish html, publish qr, publish audiobook, publish all</p>
+<p><strong>File:</strong> scripts/utils/publish.mjs + templates/epub-premium.css</p>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Module 7</span> Pipeline Orchestrator</h4>
+<p>Dieu phoi 23 skills qua 10 phases. Tu dong detect intent, check prerequisites, execute, verify gate.</p>
+<p><strong>Retry logic:</strong> Beat FAIL &rarr; retry 2 cycles (6 ban max). Chapter FAIL &rarr; fix + re-scan. Arc FAIL &rarr; chapter-level re-review.</p>
+<p><strong>File:</strong> Integrated in SKILL.md</p>
+</div>
+
+<hr class="sep">
+
+<!-- K: ARC LIFECYCLE -->
+<h2 id="arc-flow">K. Arc Lifecycle (Tu Outline Den EPUB)</h2>
+
+<div class="card highlight">
+<h4>Full Arc Flow</h4>
+<div class="beat-flow">
+<div class="beat-step write"><strong>P1</strong><br>Plan Arc<br>Outline + Beats</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step write"><strong>P2</strong><br>Pre-Forge<br>Bible + Pace<br>(x N chuong)</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>P3</strong><br>Forge<br>3 ban/beat<br>x 5 beats<br>x N chuong</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>P4</strong><br>Guard<br>Scan chuong</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>P5</strong><br>Review<br>Critique</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step decide"><strong>P6</strong><br>Ship<br>Telegram<br>+ Bible sync</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step review"><strong>P7</strong><br>Arc Review<br>Full scan</div>
+<span class="beat-arrow">&rarr;</span>
+<div class="beat-step decide"><strong>P9</strong><br>EPUB<br>Premium<br>1 cuon/arc</div>
+</div>
+
+<p style="margin-top:16px"><strong>Loop:</strong> P2 &rarr; P3 &rarr; P4 &rarr; P5 &rarr; P6 lap lai cho moi chuong trong arc. Khi het arc &rarr; P7 &rarr; P9.</p>
+<p><strong>Cuoi series:</strong> P8 (Bien Tap toan bo) &rarr; P9 --bundle (Toan Tap)</p>
+</div>
+
+<div class="card info">
+<h4>So Lieu Uoc Tinh (1 Arc = 20 Chuong)</h4>
+<table>
+<tr><th>Metric</th><th>Gia Tri</th></tr>
+<tr><td>So chuong / arc</td><td>~20</td></tr>
+<tr><td>So beats / chuong</td><td>5</td></tr>
+<tr><td>So phien ban / beat</td><td>3 (min) - 6 (max)</td></tr>
+<tr><td>Tong beats / arc</td><td>100</td></tr>
+<tr><td>Tong phien ban / arc (min)</td><td>300</td></tr>
+<tr><td>Tu / chuong</td><td>2,000 - 3,000</td></tr>
+<tr><td>Tu / arc</td><td>40,000 - 60,000</td></tr>
+<tr><td>Diem tham dinh moi beat</td><td>7 goc x (3 ban + 1 FINAL) = 28 diem so</td></tr>
+<tr><td>EPUB output</td><td>1 cuon Premium / arc</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- L: TRIGGER AUTO-DETECTION -->
+<h2 id="triggers">L. Trigger Auto-Detection (9 Patterns)</h2>
+<p>Khi nhan message, Pipeline Orchestrator tu dong detect intent va kich hoat Phase tuong ung:</p>
+
+<table>
+<tr><th>Loai</th><th>Pattern (Vi/En)</th><th>Phase Kich Hoat</th></tr>
+<tr><td>Truc tiep</td><td>"Viet chuong X", "Forge chuong X", "Soan tiep truyen"</td><td>P2 &rarr; P3 &rarr; P4 &rarr; P5 &rarr; P6</td></tr>
+<tr><td>English</td><td>"Write chapter X", "Continue the novel", "Forge next"</td><td>P2 &rarr; P3 &rarr; P4 &rarr; P5 &rarr; P6</td></tr>
+<tr><td>Planning</td><td>"Tao outline arc", "Plan arc X", "Brainstorm arc"</td><td>P1</td></tr>
+<tr><td>Check</td><td>"Scan chuong", "Kiem tra mau thuan", "Check continuity"</td><td>P4 (Guard)</td></tr>
+<tr><td>Review</td><td>"Review arc", "Phe binh chuong", "Pacing OK khong?"</td><td>P7</td></tr>
+<tr><td>Edit</td><td>"Bien tap toan bo", "Edit all", "Ra soat"</td><td>P8</td></tr>
+<tr><td>Export</td><td>"Xuat epub", "Export book", "Phat hanh"</td><td>P9</td></tr>
+<tr><td>Status</td><td>"Truyen toi dau roi?", "Tien do?", "Progress?"</td><td>Check tracker</td></tr>
+<tr><td>Issue</td><td>"Nhan vat nay mau thuan", "Plot hole", "Chuong hoi cham"</td><td>P4 (scan) hoac P7 (review)</td></tr>
+</table>
+
+<hr class="sep">
+
+<!-- M: ROUTER LOGIC -->
+<h2 id="router">M. Router Logic (Keywords &rarr; Module)</h2>
+<p>Khi kich hoat, Novel Master xac dinh module(s) can goi dua tren keywords:</p>
+
+<div class="card highlight">
+<h4>Keywords Mapping &rarr; 7 Modules</h4>
+<table>
+<tr><th>Keywords</th><th>Module</th></tr>
+<tr><td>"bible", "nhan vat", "character", "the gioi", "world", "location", "item"</td><td><span class="badge module">Module 1</span> Bible Manager</td></tr>
+<tr><td>"scan", "check", "mau thuan", "contradiction", "plot hole", "continuity"</td><td><span class="badge module">Module 2</span> Continuity Checker</td></tr>
+<tr><td>"style", "van phong", "prose", "giong van", "tone", "AI trace"</td><td><span class="badge module">Module 3</span> Prose Analyzer</td></tr>
+<tr><td>"pacing", "nhip", "tension", "beat", "rhythm", "cham", "nhanh"</td><td><span class="badge module">Module 4</span> Pacing Tracker</td></tr>
+<tr><td>"voice", "giong", "dialogue", "speech", "noi"</td><td><span class="badge module">Module 5</span> Voice Manager</td></tr>
+<tr><td>"epub", "pdf", "xuat", "publish", "phat hanh", "audiobook"</td><td><span class="badge module">Module 6</span> Publisher</td></tr>
+<tr><td>"viet chuong", "forge", "write chapter", "continue", "outline", "plan arc"</td><td><span class="badge module">Module 7</span> Pipeline Orchestrator</td></tr>
+</table>
+</div>
+
+<div class="card info">
+<h4>Combined Operations</h4>
+<table>
+<tr><th>Lenh</th><th>Modules Kich Hoat</th></tr>
+<tr><td>"scan chapter"</td><td>Module 2 (Continuity) + Module 3 (Prose) + Module 5 (Voice)</td></tr>
+<tr><td>"review arc"</td><td>ALL modules</td></tr>
+<tr><td>"pre-forge check"</td><td>Module 1 (Bible snapshot) + Module 4 (Pace suggest)</td></tr>
+<tr><td>"post-forge guard"</td><td>Module 2 + 3 + 4 + 5</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4>Auto-Trigger Trong Forge Pipeline</h4>
+<table>
+<tr><th>Phase</th><th>Tu Dong Goi</th></tr>
+<tr><td>P0 SETUP</td><td>bible init + Style Guide creation</td></tr>
+<tr><td>P2 PRE-FORGE</td><td>bible snapshot + pace suggest</td></tr>
+<tr><td>P4 GUARD</td><td>check scan + prose check + pace record + voice check</td></tr>
+<tr><td>P5 REVIEW</td><td>cw-story-critique + humanize double-check</td></tr>
+<tr><td>P7 ARC REVIEW</td><td>check scan-all + prose drift + pace curve + voice report</td></tr>
+<tr><td>P8 BIEN TAP</td><td>ALL modules full scan</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- N: CLI USAGE -->
+<h2 id="cli">N. CLI Usage (Tat Ca Lenh)</h2>
+<p>Alias: <code>alias nm='node ~/.openclaw/workspace/skills/novel-master/scripts/novel-master.mjs'</code></p>
+
+<div class="card">
+<h4><span class="badge module">Bible</span> Module 1 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm bible init "Ten Project"</code></td><td>Tao project moi voi Bible trong</td></tr>
+<tr><td><code>nm bible add character "Ten" --age 28</code></td><td>Them nhan vat</td></tr>
+<tr><td><code>nm bible add location "Truong An"</code></td><td>Them dia danh</td></tr>
+<tr><td><code>nm bible add item "Hop Tro Kinh"</code></td><td>Them vat pham</td></tr>
+<tr><td><code>nm bible update entity field value</code></td><td>Cap nhat bat ky entry nao</td></tr>
+<tr><td><code>nm bible show ten-nhan-vat</code></td><td>Hien full profile</td></tr>
+<tr><td><code>nm bible list character</code></td><td>List tat ca nhan vat</td></tr>
+<tr><td><code>nm bible snapshot 21</code></td><td>Luu trang thai nhan vat tai chuong 21</td></tr>
+<tr><td><code>nm bible diff 10 20</code></td><td>So sanh trang thai giua 2 chuong</td></tr>
+<tr><td><code>nm bible export</code></td><td>Xuat Bible ra markdown</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Continuity</span> Module 2 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm check scan chapters/ch21.md</code></td><td>Scan 1 chuong tim mau thuan</td></tr>
+<tr><td><code>nm check scan-all chapters/</code></td><td>Scan TAT CA chuong</td></tr>
+<tr><td><code>nm check scan-range 1 20 chapters/</code></td><td>Scan dai chuong 1-20</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Prose</span> Module 3 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm prose baseline ch01.md ch02.md ch03.md</code></td><td>Tao style profile tu chapters mau</td></tr>
+<tr><td><code>nm prose check chapters/ch21.md</code></td><td>So chuong voi baseline</td></tr>
+<tr><td><code>nm prose drift 1 20 chapters/</code></td><td>Do style drift qua nhieu chuong</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Pacing</span> Module 4 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm pace record 21 ACTION TENSION REVELATION EMOTIONAL QUIET</code></td><td>Ghi nhip 5 beats chuong 21</td></tr>
+<tr><td><code>nm pace curve 1</code></td><td>Hien tension curve arc 1</td></tr>
+<tr><td><code>nm pace suggest 22</code></td><td>Goi y nhip cho chuong tiep</td></tr>
+<tr><td><code>nm pace report</code></td><td>Bao cao pacing toan bo</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Voice</span> Module 5 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm voice add the-dan --name "Ly The Dan"</code></td><td>Tao voice profile</td></tr>
+<tr><td><code>nm voice build the-dan chapters/ch01.md</code></td><td>Build profile tu dialogue</td></tr>
+<tr><td><code>nm voice check chapters/ch21.md</code></td><td>Kiem tra giong nhat quan</td></tr>
+<tr><td><code>nm voice compare the-dan nguy-trung</code></td><td>So sanh 2 nhan vat</td></tr>
+<tr><td><code>nm voice report</code></td><td>Bao cao voice differentiation</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4><span class="badge module">Publisher</span> Module 6 Commands</h4>
+<table>
+<tr><th>Lenh</th><th>Mo Ta</th></tr>
+<tr><td><code>nm publish epub ./arc1 --title "Quyen 1: ..." --author "Tieu Tam" --cover bia.jpg --arc 1</code></td><td>Xuat EPUB 1 arc</td></tr>
+<tr><td><code>nm publish epub ./chapters --title "Toan Tap" --cover bia.jpg --bundle</code></td><td>Gom tat ca arc thanh Toan Tap</td></tr>
+<tr><td><code>nm publish pdf ./arc1 --title "..."</code></td><td>Xuat PDF</td></tr>
+<tr><td><code>nm publish html ./arc1 --title "..."</code></td><td>Xuat HTML Reader</td></tr>
+<tr><td><code>nm publish audiobook ./arc1 --voice vi-VN-HoaiMyNeural</code></td><td>Xuat Audiobook</td></tr>
+<tr><td><code>nm publish qr "https://facebook.com/..."</code></td><td>Tao QR code</td></tr>
+<tr><td><code>nm publish all ./arc1 --title "..." --cover bia.jpg --arc 1</code></td><td>Xuat TAT CA format</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- O: DATA LAYER -->
+<h2 id="data">O. Data Layer (Cau Truc Thu Muc)</h2>
+
+<div class="card highlight">
+<h4>Moi Project = 1 Thu Muc Data Rieng</h4>
+<p>Duong dan: <code>~/.openclaw/workspace/skills/novel-master/data/[project-slug]/</code></p>
+<p>Project slug = ten truyen slugified (VD: "Trong Sinh Thanh Duong Tam Tang" &rarr; "trong-sinh-thanh-duong-tam-tang")</p>
+</div>
+
+<div class="card">
+<h4>Cau Truc Data Per-Project</h4>
+<table>
+<tr><th>File</th><th>Module</th><th>Noi Dung</th></tr>
+<tr><td><code>bible.json</code></td><td>Bible Manager</td><td>Nhan vat + Dia danh + Vat pham + Phe phai + Su kien</td></tr>
+<tr><td><code>timeline.json</code></td><td>Continuity</td><td>Dong thoi gian su kien (chapter, timestamp, event)</td></tr>
+<tr><td><code>style-profile.json</code></td><td>Prose Analyzer</td><td>Baseline van phong (7 categories metrics)</td></tr>
+<tr><td><code>pacing.json</code></td><td>Pacing Tracker</td><td>Beat types + tension scores per chapter</td></tr>
+<tr><td><code>voices.json</code></td><td>Voice Manager</td><td>Voice profiles per character (speech patterns, vocab, tone)</td></tr>
+<tr><td><code>tracker.json</code></td><td>Pipeline</td><td>Tien do: word count, quality scores, phase status</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h4>Cau Truc Skill Toan Bo</h4>
+<table>
+<tr><th>Duong Dan</th><th>Chuc Nang</th></tr>
+<tr><td><code>skills/novel-master/SKILL.md</code></td><td>Router + Orchestrator + Rules (file chinh)</td></tr>
+<tr><td><code>scripts/novel-master.mjs</code></td><td>CLI entry point</td></tr>
+<tr><td><code>scripts/utils/bible.mjs</code></td><td>Bible Engine (CRUD, search, snapshot)</td></tr>
+<tr><td><code>scripts/utils/continuity.mjs</code></td><td>Continuity Scanner (30+ rules)</td></tr>
+<tr><td><code>scripts/utils/prose.mjs</code></td><td>Prose Style Analyzer (7 categories)</td></tr>
+<tr><td><code>scripts/utils/pacing.mjs</code></td><td>Pacing Tracker (6 beat types)</td></tr>
+<tr><td><code>scripts/utils/voice.mjs</code></td><td>Character Voice Manager</td></tr>
+<tr><td><code>scripts/utils/publish.mjs</code></td><td>EPUB/PDF/HTML/QR/Audiobook Publisher</td></tr>
+<tr><td><code>scripts/templates/epub-premium.css</code></td><td>Custom CSS cho EPUB</td></tr>
+<tr><td><code>references/bible-schema.md</code></td><td>Bible data structure + examples</td></tr>
+<tr><td><code>references/continuity-rules.md</code></td><td>30+ contradiction rules</td></tr>
+<tr><td><code>references/prose-patterns.md</code></td><td>Style measurement methodology</td></tr>
+<tr><td><code>references/pacing-model.md</code></td><td>Tension curve + beat classification</td></tr>
+<tr><td><code>references/voice-guide.md</code></td><td>Voice profiling methodology</td></tr>
+<tr><td><code>references/master-pipeline.md</code></td><td>Full 10-Phase pipeline reference</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- P: RETRY LOGIC FULL -->
+<h2 id="retry">P. Retry Logic Chi Tiet (Beat + Chapter + Arc)</h2>
+
+<div class="card danger">
+<h4>Beat Level Retry</h4>
+<table>
+<tr><th>Tinh Huong</th><th>Hanh Dong</th></tr>
+<tr><td>Beat FINAL &lt; 9/10</td><td>Viet lai 3 phien ban MOI (Cycle 2)</td></tr>
+<tr><td>Cycle 2 van &lt; 9/10</td><td>ESCALATE: bao anh Nang can thiep, dinh kem 6 phien ban da viet</td></tr>
+<tr><td>Max phien ban / beat</td><td>6 (2 cycles x 3 ban)</td></tr>
+</table>
+</div>
+
+<div class="card warn">
+<h4>Chapter Level Retry</h4>
+<table>
+<tr><th>Tinh Huong</th><th>Hanh Dong</th></tr>
+<tr><td>Phase 4 GUARD: critical issue &gt; 0</td><td>Xac dinh beat loi &rarr; viet lai beat do (3-version cycle)</td></tr>
+<tr><td>Phase 4: style drift &gt; 20%</td><td>Ra soat tung beat, fix drift &rarr; re-scan</td></tr>
+<tr><td>Phase 4: voice inconsistent</td><td>Sua dialogue nhan vat loi &rarr; re-check</td></tr>
+<tr><td>Phase 5 REVIEW: Critique FAIL</td><td>Fix theo feedback critique &rarr; re-review</td></tr>
+<tr><td>Phase 5: AI trace phat hien</td><td>Humanize lai &rarr; re-check</td></tr>
+<tr><td>Max chapter retries</td><td>3 lan fix-and-rescan. Qua 3 &rarr; ESCALATE</td></tr>
+</table>
+</div>
+
+<div class="card danger">
+<h4>Arc Level Retry</h4>
+<table>
+<tr><th>Tinh Huong</th><th>Hanh Dong</th></tr>
+<tr><td>Phase 7: critical issue phat hien</td><td>Xac dinh chuong loi &rarr; quay lai P4-P5-P6 cho chuong do</td></tr>
+<tr><td>Phase 7: pacing curve khong healthy</td><td>Xac dinh chuong monotone &rarr; dieu chinh beats</td></tr>
+<tr><td>Phase 7: style drift &gt; 20% toan arc</td><td>Ra soat chuong drift lon nhat &rarr; fix &rarr; re-drift</td></tr>
+<tr><td>Phase 7: voice similarity &gt; 40%</td><td>Fix dialogue cap nhan vat giong nhau &rarr; re-voice</td></tr>
+<tr><td>Max arc retries</td><td>2 lan full-rescan. Qua 2 &rarr; ESCALATE + lessons learned</td></tr>
+</table>
+</div>
+
+<div class="card pass">
+<h4>Escalation Protocol</h4>
+<table>
+<tr><th>Level</th><th>Trigger</th><th>Hanh Dong</th></tr>
+<tr><td>Level 1</td><td>Beat 6 phien ban van FAIL</td><td>Bao anh Nang + dinh kem 6 ban + diem so + feedback</td></tr>
+<tr><td>Level 2</td><td>Chapter 3 lan fix van FAIL</td><td>Bao anh Nang + chi ra issues cu the + de xuat giai phap</td></tr>
+<tr><td>Level 3</td><td>Arc 2 lan rescan van FAIL</td><td>Bao anh Nang + arc review report + lessons learned + de xuat restructure</td></tr>
+</table>
+</div>
+
+<hr class="sep">
+
+<!-- VERSION HISTORY -->
+<h2>Lich Su Phien Ban</h2>
+
+<table>
+<tr><th>Version</th><th>Ngay</th><th>Thay Doi</th></tr>
+<tr><td>V1.0</td><td>2026-03-09</td><td>Novel Guardian goc (5 modules, 20 rules)</td></tr>
+<tr><td>V1.2</td><td>2026-03-10</td><td>Novel Master hop nhat Guardian + Forge. 6-Angle Review.</td></tr>
+<tr><td>V2.0</td><td>2026-03-10</td><td>10-Phase Pipeline. 23-Skill Map. Quality Gate 9/10.</td></tr>
+<tr><td><strong>V2.1</strong></td><td><strong>2026-03-11</strong></td><td><strong>3-Version Beat Forge. 7-Angle Review (+Markdown). EPUB Per-Arc. Markdown+AI clean tich hop vao beat review. Them 6 phan: Trigger Detection, Router Logic, CLI Usage, Data Layer, Retry Logic Full, Escalation Protocol.</strong></td></tr>
+</table>
+
+<div class="footer">
+<p>Novel Master V2.1 Blueprint &mdash; Tieu Tam &copy; 2026</p>
+<p>Tac gia: Tieu Tam &middot; 10 Phases &middot; 7 Modules &middot; 23 Skills &middot; 3-Version Beat Forge</p>
+<p style="margin-top:12px;color:var(--accent);font-style:italic">"Engineering is not coding. Engineering is decision-making."</p>
+</div>
+
+</div>
+
+</body>
+</html>

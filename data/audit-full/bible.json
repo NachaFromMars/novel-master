@@ -1,0 +1,103 @@
+{
+  "project": {
+    "name": "Audit Test",
+    "slug": "audit-full",
+    "genre": "fantasy",
+    "pov": "first-person",
+    "mc": null,
+    "created": "2026-03-11T19:05:02.449Z",
+    "updated": "2026-03-11T19:07:12.599Z",
+    "totalChapters": 0,
+    "currentArc": 1
+  },
+  "characters": {
+    "duong-tng": {
+      "identity": {
+        "name": "Đường Tăng",
+        "aliases": [],
+        "age": null,
+        "gender": "unknown",
+        "species": "human",
+        "appearance": {
+          "height": "",
+          "build": "",
+          "face": "",
+          "distinguishing": "",
+          "clothing": ""
+        },
+        "background": ""
+      },
+      "personality": {
+        "traits": [],
+        "motivations": [],
+        "fears": [],
+        "desires": [],
+        "moralCompass": "",
+        "quirks": []
+      },
+      "relationships": [],
+      "voice": {
+        "vocabularyLevel": "educated",
+        "sentenceStyle": "flowing",
+        "catchphrases": [],
+        "dialect": "",
+        "emotionalExpression": {
+          "anger": "",
+          "joy": "",
+          "fear": "",
+          "love": ""
+        },
+        "forbiddenWords": [],
+        "speechQuirks": []
+      },
+      "arc": {
+        "type": "unknown",
+        "trajectory": []
+      },
+      "states": {
+        "ch00": {
+          "location": "",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 0,
+          "notes": ""
+        }
+      }
+    }
+  },
+  "locations": {},
+  "items": {},
+  "factions": {},
+  "history": [],
+  "worldRules": {
+    "magic": {
+      "system": "",
+      "levels": [],
+      "rules": [],
+      "limitations": []
+    },
+    "physics": {
+      "notes": ""
+    },
+    "society": {
+      "notes": ""
+    }
+  },
+  "snapshots": {
+    "ch01": {
+      "timestamp": "2026-03-11T19:07:12.599Z",
+      "characterStates": {
+        "duong-tng": {
+          "location": "",
+          "condition": "alive",
+          "knowledge": [],
+          "possessions": [],
+          "powerLevel": 0,
+          "notes": ""
+        }
+      },
+      "notes": ""
+    }
+  }
+}

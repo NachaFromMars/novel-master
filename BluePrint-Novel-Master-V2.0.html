@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BluePrint Novel Master V2.0 — 10-Phase Pipeline Orchestrator</title>
+<style>
+:root{--cream:#F5F0EB;--gold:#C9A96E;--crimson:#8B1A2F;--sage:#B8C9C0;--ink:#2C2C2C;--white:#fff;--good:#2d6a4f;--warn:#d4a574;--fail:#a02a2a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--cream);color:var(--ink);line-height:1.8}
+.wrapper{max-width:1200px;margin:0 auto;padding:1.5em}
+.hero{text-align:center;padding:4em 1em 2.5em;background:linear-gradient(135deg,var(--crimson),#5c1120);color:var(--white);border-radius:16px;margin-bottom:2em;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(201,169,110,0.15) 0%,transparent 60%);animation:glow 8s ease-in-out infinite}
+@keyframes glow{0%,100%{transform:translate(0,0)}50%{transform:translate(5%,5%)}}
+.hero h1{font-size:2.8em;font-weight:800;letter-spacing:1px;position:relative;margin-bottom:0.3em}
+.hero .ver{font-size:1.1em;color:var(--gold);margin-top:0.3em;font-weight:600}
+.hero .meta{font-size:0.9em;color:rgba(255,255,255,0.8);margin-top:1em}
+.hero .stat{display:inline-block;margin:0.5em 1em;padding:0.5em 1em;background:rgba(0,0,0,0.2);border-radius:8px;font-weight:600}
+.nav{display:flex;flex-wrap:wrap;gap:0.5em;justify-content:center;margin:2em 0;padding:0 1em}
+.nav a{background:var(--white);color:var(--crimson);text-decoration:none;padding:0.6em 1.2em;border-radius:20px;font-size:0.9em;font-weight:700;border:2px solid var(--gold);transition:all 0.3s;cursor:pointer}
+.nav a:hover{background:var(--crimson);color:var(--white);transform:translateY(-2px)}
+section{background:var(--white);border-radius:12px;padding:2em;margin:1.5em 0;border:1px solid #e8e0d5;box-shadow:0 4px 12px rgba(0,0,0,0.06)}
+h2{color:var(--crimson);font-size:1.6em;margin-bottom:1.2em;padding-bottom:0.5em;border-bottom:3px solid var(--gold);display:flex;align-items:center;gap:0.6em}
+h3{color:var(--gold);font-size:1.15em;margin:1.5em 0 0.6em;font-weight:700}
+h4{color:var(--ink);font-size:1.05em;margin:1.2em 0 0.4em;font-weight:600}
+.phase-card{background:linear-gradient(135deg,#faf8f5,#f5f0eb);border-left:5px solid var(--gold);border-radius:0 8px 8px 0;padding:1.5em;margin:1em 0;position:relative}
+.phase-card h3{margin-top:0;color:var(--crimson)}
+.phase-num{position:absolute;right:1.5em;top:1.5em;font-size:3em;font-weight:900;color:rgba(201,169,110,0.15);line-height:1}
+.phase-content{position:relative}
+.phase-step{background:#fff;border:1px solid #e0dbd0;border-radius:6px;padding:1em;margin:0.8em 0;display:flex;gap:1em}
+.step-num{background:var(--crimson);color:var(--white);width:2.5em;height:2.5em;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0;font-size:0.95em}
+.step-content h4{margin-top:0;color:var(--crimson)}
+.step-content p{margin:0.4em 0;font-size:0.95em}
+.skill-tag{display:inline-block;background:var(--gold);color:var(--ink);padding:0.25em 0.6em;border-radius:4px;font-size:0.85em;font-weight:600;margin:0.2em 0.2em 0 0}
+.gate{background:linear-gradient(135deg,var(--crimson),#a02040);color:var(--white);padding:1.2em;border-radius:8px;margin:1em 0;text-align:center;font-size:1.05em;font-weight:600}
+table{width:100%;border-collapse:collapse;margin:1.2em 0;font-size:0.95em}
+th{background:var(--crimson);color:var(--white);padding:0.8em;text-align:left;font-weight:700;border:1px solid #ddd}
+td{padding:0.7em 0.8em;border:1px solid #eee}
+tr:nth-child(even){background:#faf8f5}
+tr:hover{background:rgba(201,169,110,0.1)}
+.flow{background:var(--ink);color:var(--cream);padding:1.5em;border-radius:8px;font-family:'Cascadia Code','Fira Code',monospace;font-size:0.9em;line-height:2;overflow-x:auto;margin:1em 0}
+.flow .phase{color:var(--gold);font-weight:900}
+.flow .arrow{color:var(--sage)}
+.flow .detail{color:rgba(245,240,235,0.7);font-size:0.85em}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5em;margin:1em 0}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2em;margin:1em 0}
+.card{background:linear-gradient(135deg,#faf8f5,#f5f0eb);border-radius:8px;padding:1.2em;border:1px solid #e0dbd0}
+.card h4{margin-top:0;color:var(--crimson)}
+.badge{display:inline-block;padding:0.3em 0.8em;border-radius:16px;font-size:0.85em;font-weight:700}
+.b-phase{background:var(--gold);color:var(--ink)}
+.b-skill{background:var(--sage);color:var(--white)}
+.b-pass{background:var(--good);color:var(--white)}
+.b-warn{background:var(--warn);color:var(--ink)}
+.b-rule{background:var(--crimson);color:var(--white)}
+.highlight{background:linear-gradient(135deg,var(--crimson),#a02040);color:var(--white);padding:1em 1.2em;border-radius:8px;margin:1em 0}
+.rule-set{background:#faf8f5;border-left:4px solid var(--crimson);padding:1em;margin:0.8em 0;border-radius:0 4px 4px 0}
+.rule-set strong{color:var(--crimson);display:block;margin-bottom:0.3em}
+.footer{text-align:center;padding:2em 1em;margin-top:3em;border-top:3px solid var(--gold);color:#888;font-size:0.9em}
+.footer .brand{color:var(--crimson);font-weight:800;font-size:1.2em}
+.timeline{position:relative;padding:2em 0}
+.timeline::before{content:'';position:absolute;left:1.5em;top:0;bottom:0;width:3px;background:var(--gold)}
+.timeline-item{margin-left:4em;margin-bottom:2em;position:relative}
+.timeline-item::before{content:'';position:absolute;left:-2.8em;top:0.3em;width:1.2em;height:1.2em;background:var(--crimson);border:3px solid var(--cream);border-radius:50%}
+.timeline-item h4{margin-top:0}
+.expand-btn{background:var(--gold);color:var(--ink);border:none;padding:0.6em 1.2em;border-radius:6px;font-weight:700;cursor:pointer;transition:all 0.3s;margin:0.5em 0}
+.expand-btn:hover{background:var(--crimson);color:var(--white)}
+.hidden{display:none}
+@media(max-width:768px){
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .hero h1{font-size:1.8em}
+  .nav{gap:0.3em}
+  .nav a{font-size:0.75em;padding:0.4em 0.8em}
+  section{padding:1.2em}
+  h2{font-size:1.2em}
+  table{font-size:0.85em}
+}
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+<!-- HERO -->
+<div class="hero">
+<h1>📜 BluePrint Novel Master V2.0</h1>
+<div class="ver">Version 2.0.0 — 10-Phase Pipeline Orchestrator</div>
+<div class="meta">
+Ngày tạo: 2026-03-11 | Tác giả hệ thống: Tiểu Tâm 🦊<br>
+7 Modules · 10 Phases · 23 Skills · ≥ 9/10 Quality Gate · 30+ Continuity Rules
+</div>
+<div style="margin-top:1.5em">
+<span class="stat">🎯 Forge Rules A1-A5</span>
+<span class="stat">🔍 6-Angle Beat Review</span>
+<span class="stat">⚙️ 23-Skill Map</span>
+<span class="stat">🚀 Auto-Trigger</span>
+</div>
+</div>
+
+<!-- NAV -->
+<div class="nav">
+<a href="#a">A. Quy Tắc Viết</a>
+<a href="#b">B. Thẩm Định</a>
+<a href="#c">C. Hoàn Thành</a>
+<a href="#d">D. Biên Tập</a>
+<a href="#e">E. EPUB</a>
+<a href="#f">F. 10 Phase</a>
+<a href="#g">G. Gates</a>
+<a href="#h">H. 23 Skills</a>
+<a href="#i">I. Triggers</a>
+<a href="#j">J. 7 Modules</a>
+</div>
+
+<!-- A: QUY TẮC VIẾT -->
+<section id="a">
+<h2>🖊️ A — QUY TẮC VIẾT (FORGE RULES)</h2>
+<p style="font-style:italic;color:#666;margin-bottom:1em">Bất biến. Áp dụng cho MỌI dự án tiểu thuyết.</p>
+
+<div class="rule-set">
+<strong>A1 — Đơn lập 400-600 từ mỗi beat</strong>
+<p>• Mỗi beat là một đơn vị viết độc lập, tự hoàn chỉnh<br>
+• Tối thiểu 400 từ, tối đa 600 từ. TUYỆT ĐỐI không vượt<br>
+• Mỗi chương gồm 5 beats, tổng khoảng 2000-3000 từ</p>
+</div>
+
+<div class="rule-set">
+<strong>A2 — Không markdown trong prose</strong>
+<p>• Không dùng ký tự markdown: # * ** _ --- ><br>
+• Không bullet points, không lists, không tables<br>
+• Chỉ văn xuôi thuần tuý với dấu câu tự nhiên</p>
+</div>
+
+<div class="rule-set">
+<strong>A3 — Không dấu vết AI</strong>
+<p>• Không dùng từ AI hay dùng: brilliant, stunning, delve, tapestry, journey<br>
+• Không lặp pattern 3 câu liên tiếp cùng cấu trúc<br>
+• Không câu kết sáo rỗng. Phải show, không tell<br>
+• Humanize bắt buộc sau mỗi beat</p>
+</div>
+
+<div class="rule-set">
+<strong>A4 — Giọng văn nhất quán</strong>
+<p>• Giọng kể tuỳ project (VD: Trọng Sinh = ngôi nhất "tao", hài đen 70%)<br>
+• Giọng phải nhất quán từ beat đầu tới cuối, toàn bộ chương<br>
+• Mỗi project có 1 Style Guide, tạo 1 lần duy nhất (Phase 0)</p>
+</div>
+
+<div class="rule-set">
+<strong>A5 — Mỗi nhân vật một giọng riêng</strong>
+<p>• Dialogue mỗi nhân vật có speech pattern khác biệt<br>
+• Hai nhân vật nói giống nhau là FAIL (similarity > 40% = FAIL)</p>
+</div>
+</section>
+
+<!-- B: THẨM ĐỊNH -->
+<section id="b">
+<h2>🔍 B — QUY TẮC THẨM ĐỊNH (6 GÓCS)</h2>
+
+<h3>B1 — Thẩm định sau MỖI beat</h3>
+<p>✓ Viết xong 1 beat → LẬP TỨC spawn thẩm định<br>
+✓ KHÔNG đợi cả chương, KHÔNG gộp 5 beats<br>
+✓ Beat 1 PASS → mới viết Beat 2</p>
+
+<h3 style="margin-top:1.5em">B2 — Thẩm định đa diện 6 góc</h3>
+<table>
+<tr><th>#</th><th>Góc</th><th>Kiểm tra</th><th>Trọng số</th></tr>
+<tr><td>1</td><td><strong>Prose Quality</strong></td><td>Câu chữ mượt? Nhịp điệu? Từ vựng phong phú?</td><td>20%</td></tr>
+<tr><td>2</td><td><strong>Consistency</strong></td><td>Nhất quán với Bible? Tên, địa danh, trạng thái?</td><td>20%</td></tr>
+<tr><td>3</td><td><strong>Character Voice</strong></td><td>Nhân vật nói đúng giọng? Hành động đúng tính cách?</td><td>15%</td></tr>
+<tr><td>4</td><td><strong>Pacing</strong></td><td>Beat nhanh/chậm phù hợp vị trí trong chương/arc?</td><td>15%</td></tr>
+<tr><td>5</td><td><strong>AI Trace</strong></td><td>Còn dấu vết AI? Markdown? Pattern lặp? Từ cấm?</td><td>20%</td></tr>
+<tr><td>6</td><td><strong>Engagement</strong></td><td>Đọc hấp dẫn? Muốn đọc tiếp? Hook cuối beat?</td><td>10%</td></tr>
+</table>
+
+<div class="highlight" style="text-align:center;margin-top:1.5em">
+<strong>B3 — Điểm PASS: ≥ 9/10</strong><br>
+<span style="font-size:0.9em">Đạt 9 trở lên → viết beat tiếp | Dưới 9 → VIẾT LẠI<br>
+Tối đa 3 lần viết lại → báo anh Nấng can thiệp<br>
+Điểm tổng = trung bình có trọng số 6 góc</span>
+</div>
+</section>
+
+<!-- C: HOÀN THÀNH CHƯƠNG -->
+<section id="c">
+<h2>✅ C — HOÀN THÀNH CHƯƠNG (C1-C7)</h2>
+
+<table>
+<tr><th>Bước</th><th>Nội dung</th><th>Skill sử dụng</th><th>Gate</th></tr>
+<tr><td><strong>C1</strong></td><td>Ghép 5 beats PASS thành chương, kiểm tra transitions</td><td>—</td><td>5 beats OK</td></tr>
+<tr><td><strong>C2</strong></td><td>Novel Guardian Scan: 0 critical, pacing OK, style nhất quán</td><td>novel-master check/prose/pace</td><td>0 critical</td></tr>
+<tr><td><strong>C3</strong></td><td>CW Story Critique: phê bình pacing, character arcs, dialogue</td><td>cw-story-critique</td><td>Critique PASS</td></tr>
+<tr><td><strong>C4</strong></td><td>Humanize Final: 0% markdown, 0% AI trace</td><td>humanize</td><td>0% AI trace</td></tr>
+<tr><td><strong>C5</strong></td><td>Gửi file FINAL lên Telegram ngay + báo cáo tóm tắt</td><td>message tool</td><td>Gửi OK</td></tr>
+<tr><td><strong>C6</strong></td><td>Cập nhật Bible sync + wiki update</td><td>novel-master bible + cw-official-docs</td><td>Bible synced</td></tr>
+<tr><td><strong>C7</strong></td><td>Auto spawn chương tiếp, không dừng giữa chừng</td><td>mula-ralph / sub-agent</td><td>Ch. tiếp STARTED</td></tr>
+</table>
+</section>
+
+<!-- D: BIÊN TẬP -->
+<section id="d">
+<h2>📝 D — BIÊN TẬP SIÊU KỸ (khi toàn bộ DONE)</h2>
+<p style="font-style:italic;margin-bottom:1em">Chạy AFTER tất cả chương forge xong. Phase 8 của Pipeline.</p>
+
+<div class="phase-step">
+<div class="step-num">D1</div>
+<div class="step-content">
+<h4>Rà soát từng beat</h4>
+<p>400-600 từ mỗi lần, đọc kỹ toàn bộ truyện</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">D2</div>
+<div class="step-content">
+<h4>Giọng nhất quán toàn bộ</h4>
+<p>Từ đầu tới cuối mỗi chương. Drift > 20% → sửa</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">D3</div>
+<div class="step-content">
+<h4>Scan toàn bộ fix mâu thuẫn</h4>
+<p>Timeline, power levels, vị trí, vật phẩm. Dùng `nm check scan-all`</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">D4</div>
+<div class="step-content">
+<h4>Humanize pass cuối</h4>
+<p>0% AI trace toàn bộ. Dùng humanize skill lần cuối</p>
+</div>
+</div>
+</section>
+
+<!-- E: EPUB -->
+<section id="e">
+<h2>📚 E — EPUB PREMIUM</h2>
+
+<h3>Tác giả: Tiểu Tâm (trên mọi bản)</h3>
+
+<h3 style="margin-top:1.5em">Cấu trúc EPUB3</h3>
+<table>
+<tr><th>Phần</th><th>Thành phần</th></tr>
+<tr><td><strong>Bìa</strong></td><td>Trước (minh hoạ) + Gáy (tên sách + tác giả) + Sau (tóm tắt + blurb)</td></tr>
+<tr><td><strong>Front Matter</strong></td><td>Title Page, Copyright, Dedication, Author's Note, TOC (auto), Map</td></tr>
+<tr><td><strong>Body</strong></td><td>Part Pages (mỗi arc) + Chapters (prose + drop caps)</td></tr>
+<tr><td><strong>Back Matter</strong></td><td>Afterword, Character Guide, Glossary, Timeline, Acknowledgments, About Author + QR</td></tr>
+</table>
+
+<h3 style="margin-top:1.5em">Thiết kế & Spec</h3>
+<div class="grid-2">
+<div class="card">
+<h4>Màu sắc</h4>
+<p>• Trắng sữa #F5F0EB<br>
+• Vàng hổ phách #C9A96E<br>
+• Đỏ thẫm #8B1A2F<br>
+• Sage xanh #B8C9C0</p>
+</div>
+<div class="card">
+<h4>Typography</h4>
+<p>• Font: Noto Serif<br>
+• Line-height: 1.7<br>
+• Drop caps: Đỏ thẫm<br>
+• Format: EPUB3</p>
+</div>
+</div>
+
+<p style="margin-top:1.5em"><strong>QR Code:</strong> facebook.com/profile.php?id=61588560594683</p>
+<p style="margin-top:0.5em"><strong>CLI:</strong> <code>nm publish all ./chapters --title "..." --author "Tiểu Tâm" --cover bia.jpg</code></p>
+</section>
+
+<!-- F: 10 PHASE PIPELINE -->
+<section id="f">
+<h2>⚙️ F — 10-PHASE PIPELINE</h2>
+
+<div class="flow">
+<span class="phase">PHASE 0 ──►</span> <span class="phase">PHASE 1 ──►</span> <span class="phase">PHASE 2 ──►</span> <span class="phase">PHASE 3 ──►</span> <span class="phase">PHASE 4</span>
+<span class="detail">(SETUP)      (PLAN)       (PRE-FORGE)  (FORGE)      (GUARD)</span>
+<span class="arrow">    │            │            │           │            │</span>
+<span class="arrow">    ▼            ▼            ▼           ▼            ▼</span>
+
+<span class="phase">PHASE 5 ──►</span> <span class="phase">PHASE 6 ──►</span> <span class="phase">PHASE 7 ──►</span> <span class="phase">PHASE 8 ──►</span> <span class="phase">PHASE 9</span>
+<span class="detail">(REVIEW)     (SHIP)       (ARC-REVIEW) (BIÊN TẬP)   (EPUB)</span>
+</div>
+
+<!-- PHASE 0 -->
+<div class="phase-card">
+<div class="phase-num">0</div>
+<h3>SETUP (1 lần duy nhất mỗi project)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">0.1</div>
+<div class="step-content">
+<h4>Research bối cảnh</h4>
+<p>
+<span class="skill-tag">deep-research-pro</span>
+Nếu cần tìm hiểu lịch sử, địa lý, bối cảnh thế giới
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">0.2</div>
+<div class="step-content">
+<h4>Tạo Style Guide</h4>
+<p>
+<span class="skill-tag">cw-style-skill-creator</span>
+Phân tích chapters mẫu, tạo style-guide.md để AI follow
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">0.3</div>
+<div class="step-content">
+<h4>Khởi tạo Bible + Project</h4>
+<p>
+<span class="skill-tag">novel-master bible</span>
+<code>nm bible init "Tên Project"</code> → tạo bible.json
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">0.4</div>
+<div class="step-content">
+<h4>Tạo Tracker</h4>
+<p>Tiến độ, word count, quality scores per chapter</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Style Guide tồn tại + Bible initialized + Tracker ready</div>
+</div>
+
+<!-- PHASE 1 -->
+<div class="phase-card">
+<div class="phase-num">1</div>
+<h3>PLAN (mỗi arc)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">1.1</div>
+<div class="step-content">
+<h4>Research bối cảnh arc</h4>
+<p>
+<span class="skill-tag">deep-research-pro</span>
+Lịch sử/địa lý liên quan tới arc này (nếu cần)
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">1.2</div>
+<div class="step-content">
+<h4>Brainstorm outline arc</h4>
+<p>
+<span class="skill-tag">cw-brainstorming</span>
+<span class="skill-tag">think-cog</span>
+Conflict chính + twist + character arcs → outline-arcX.md
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">1.3</div>
+<div class="step-content">
+<h4>Chia chương chi tiết</h4>
+<p>5 beats/chương, tóm tắt mỗi beat (chương nào, beat nào viết gì)</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> ≥ 3 conflict + ≥ 1 twist per arc, outline cụ thể</div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="phase-card">
+<div class="phase-num">2</div>
+<h3>PRE-FORGE (mỗi chương)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">2.1</div>
+<div class="step-content">
+<h4>Bible Check</h4>
+<p>
+<span class="skill-tag">novel-master bible</span>
+Nhân vật ở đâu, trạng thái hiện tại, power level, possessions
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">2.2</div>
+<div class="step-content">
+<h4>Pace Suggest</h4>
+<p>
+<span class="skill-tag">novel-master pace</span>
+<code>nm pace suggest [ch#]</code> → nhịp lý tưởng cho chương tiếp
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">2.3</div>
+<div class="step-content">
+<h4>Detail 5 Beats</h4>
+<p>
+<span class="skill-tag">cw-brainstorming</span>
+Tóm tắt cụ thể: beat 1 viết gì, beat 2 viết gì... → beats-chXX.md
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">2.4</div>
+<div class="step-content">
+<h4>Bible Snapshot</h4>
+<p>
+<span class="skill-tag">novel-master bible</span>
+<code>nm bible snapshot [ch#]</code> → lưu trạng thái nhân vật hiện tại
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Bible snapshot taken + 5 beats detailed cụ thể</div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="phase-card">
+<div class="phase-num">3</div>
+<h3>FORGE (mỗi beat) — LÝ TƯỞNG ≥ 9/10</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">3.1</div>
+<div class="step-content">
+<h4>Viết Beat 1</h4>
+<p>
+<span class="skill-tag">omni-forge-novel</span>
+400-600 từ, 0 markdown, 0 AI trace, apply style guide
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">3.2</div>
+<div class="step-content">
+<h4>Thẩm định đa diện 6 góc</h4>
+<p>
+<span class="skill-tag">mula-audit</span> (hoặc manual 6 reviewers)
+Prose (20%) + Consistency (20%) + Voice (15%) + Pacing (15%) + AI Trace (20%) + Engagement (10%)
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">3.3</div>
+<div class="step-content">
+<h4>Điểm ≥ 9/10?</h4>
+<p><strong style="color:var(--good)">YES:</strong> PASS → viết Beat 2<br>
+<strong style="color:var(--fail)">NO:</strong> VIẾT LẠI Beat 1 (max 3 retries)</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">3.4</div>
+<div class="step-content">
+<h4>Lặp cho 5 beats</h4>
+<p>Beat 2 PASS → Beat 3 → Beat 4 → Beat 5, all ≥ 9/10</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> MỖI beat ≥ 9/10 thẩm định đa diện. Tối đa 3 retries/beat. Nếu fail 3 lần → escalate báo anh Nấng</div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="phase-card">
+<div class="phase-num">4</div>
+<h3>GUARD (mỗi chương)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">4.1</div>
+<div class="step-content">
+<h4>Ghép 5 beats thành chương</h4>
+<p>Kiểm tra transitions, chương hoàn chỉnh, đọc lại lần cuối</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">4.2</div>
+<div class="step-content">
+<h4>Continuity Scan</h4>
+<p>
+<span class="skill-tag">novel-master check</span>
+<code>nm check scan chapters/chXX.md</code> → 0 CRITICAL required
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">4.3</div>
+<div class="step-content">
+<h4>Prose Check</h4>
+<p>
+<span class="skill-tag">novel-master prose</span>
+<code>nm prose check chapters/chXX.md</code> → drift &lt; 20%
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">4.4</div>
+<div class="step-content">
+<h4>Pace Record</h4>
+<p>
+<span class="skill-tag">novel-master pace</span>
+<code>nm pace record [ch#] ACTION TENSION ...</code> → nhịp OK, no violations
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">4.5</div>
+<div class="step-content">
+<h4>Voice Check</h4>
+<p>
+<span class="skill-tag">novel-master voice</span>
+<code>nm voice check chapters/chXX.md</code> → giọng nhất quán
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> 0 critical, ≤ 2 warnings, drift &lt; 20%, pacing OK, voice consistent</div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="phase-card">
+<div class="phase-num">5</div>
+<h3>REVIEW (mỗi chương)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">5.1</div>
+<div class="step-content">
+<h4>CW Story Critique</h4>
+<p>
+<span class="skill-tag">cw-story-critique</span>
+Phê bình pacing, character arcs, dialogue, engagement
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">5.2</div>
+<div class="step-content">
+<h4>Humanize</h4>
+<p>
+<span class="skill-tag">humanize</span>
+Clean AI patterns → 0% AI trace
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">5.3</div>
+<div class="step-content">
+<h4>Multi-Agent Review (optional)</h4>
+<p>
+<span class="skill-tag">mula-audit</span>
+Nếu chương quan trọng, spawn 6 reviewers song song
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Critique PASS + Humanize 0% AI trace</div>
+</div>
+
+<!-- PHASE 6 -->
+<div class="phase-card">
+<div class="phase-num">6</div>
+<h3>SHIP (mỗi chương)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">6.1</div>
+<div class="step-content">
+<h4>Gửi FINAL lên Telegram</h4>
+<p>
+<span class="skill-tag">message tool</span>
+File chXX-FINAL.md + báo cáo tóm tắt (5 beats summary + tiến độ)
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">6.2</div>
+<div class="step-content">
+<h4>Bible Sync</h4>
+<p>
+<span class="skill-tag">novel-master bible</span>
+Cập nhật nhân vật mới, sự kiện mới, trạng thái cập nhật
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">6.3</div>
+<div class="step-content">
+<h4>Wiki Update</h4>
+<p>
+<span class="skill-tag">cw-official-docs</span>
+Cập nhật character profiles, location guide, item list
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">6.4</div>
+<div class="step-content">
+<h4>Tracker Update</h4>
+<p>Cập nhật word count, chapter done, quality scores</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">6.5</div>
+<div class="step-content">
+<h4>Auto Spawn Ch. Tiếp</h4>
+<p>
+<span class="skill-tag">mula-ralph</span>
+Quay lại Phase 2, không dừng giữa chừng. Tự động tiếp tục forge
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Gửi Telegram OK + Bible synced + Wiki updated + Ch. tiếp STARTED</div>
+</div>
+
+<!-- PHASE 7 -->
+<div class="phase-card">
+<div class="phase-num">7</div>
+<h3>ARC REVIEW (mỗi arc xong)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">7.1</div>
+<div class="step-content">
+<h4>Full Continuity Scan</h4>
+<p>
+<span class="skill-tag">novel-master check</span>
+<code>nm check scan-all ./chapters/</code> → tổng quan continuity arc
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">7.2</div>
+<div class="step-content">
+<h4>Style Drift Analysis</h4>
+<p>
+<span class="skill-tag">novel-master prose</span>
+<code>nm prose drift [start] [end] ./chapters/</code> → toàn arc
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">7.3</div>
+<div class="step-content">
+<h4>Pacing Curve</h4>
+<p>
+<span class="skill-tag">novel-master pace</span>
+<code>nm pace curve [arc#]</code> → tension curve healthy
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">7.4</div>
+<div class="step-content">
+<h4>Voice Report</h4>
+<p>
+<span class="skill-tag">novel-master voice</span>
+<code>nm voice report</code> → voice differentiation good
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">7.5</div>
+<div class="step-content">
+<h4>Arc-Level Critique</h4>
+<p>
+<span class="skill-tag">cw-story-critique</span>
+Review toàn arc: conflict resolution, character arcs completed
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">7.6</div>
+<div class="step-content">
+<h4>Lessons Learned</h4>
+<p>
+<span class="skill-tag">self-improving-agent</span>
+Lưu memory: gì thành công, gì cần cải thiện arc tiếp
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> 0 critical toàn arc + pacing curve healthy + voice differentiation OK</div>
+</div>
+
+<!-- PHASE 8 -->
+<div class="phase-card">
+<div class="phase-num">8</div>
+<h3>BIÊN TẬP SIÊU KỸ (khi toàn bộ DONE)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">8.1</div>
+<div class="step-content">
+<h4>Rà soát từng beat</h4>
+<p>400-600 từ mỗi lần, đọc kỹ toàn bộ truyện (Phase D1)</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">8.2</div>
+<div class="step-content">
+<h4>Giọng nhất quán toàn chương</h4>
+<p>Từ đầu tới cuối, drift > 20% → sửa (Phase D2)</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">8.3</div>
+<div class="step-content">
+<h4>Scan toàn bộ fix mâu thuẫn</h4>
+<p>
+<span class="skill-tag">novel-master check</span>
+<code>nm check scan-all</code> → fix ALL issues (Phase D3)
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">8.4</div>
+<div class="step-content">
+<h4>Pacing curve toàn truyện</h4>
+<p>
+<span class="skill-tag">novel-master pace</span>
+Balance từ đầu tới cuối
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">8.5</div>
+<div class="step-content">
+<h4>Style drift check & fix</h4>
+<p>
+<span class="skill-tag">novel-master prose</span>
+Sửa lệch giọng, đảm bảo nhất quán
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">8.6</div>
+<div class="step-content">
+<h4>Humanize pass cuối</h4>
+<p>
+<span class="skill-tag">humanize</span>
+0% AI trace toàn bộ (Phase D4)
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Giọng nhất quán + 0 plot hole + 0 AI trace toàn bộ</div>
+</div>
+
+<!-- PHASE 9 -->
+<div class="phase-card">
+<div class="phase-num">9</div>
+<h3>EPUB PREMIUM EXPORT (FINAL DELIVERY)</h3>
+<div class="phase-content">
+
+<div class="phase-step">
+<div class="step-num">9.1</div>
+<div class="step-content">
+<h4>Generate Bìa</h4>
+<p>
+<span class="skill-tag">book-cover-design</span>
+AI design hoặc cung cấp file bia.jpg
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.2</div>
+<div class="step-content">
+<h4>Build Front Matter</h4>
+<p>
+<span class="skill-tag">novel-master publish</span>
+Title Page, Copyright, Dedication, Author's Note, TOC, Map
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.3</div>
+<div class="step-content">
+<h4>Build Body</h4>
+<p>Chapters + Part dividers (mỗi arc) + drop caps</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.4</div>
+<div class="step-content">
+<h4>Build Back Matter</h4>
+<p>Afterword, Character Guide, Glossary, Timeline, Acknowledgments, About Author</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.5</div>
+<div class="step-content">
+<h4>Generate QR Code</h4>
+<p>
+<span class="skill-tag">qr-code-generator</span>
+→ facebook.com/profile.php?id=61588560594683
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.6</div>
+<div class="step-content">
+<h4>Xuất EPUB3 + Formats</h4>
+<p>
+<span class="skill-tag">novel-master publish</span>
+<code>nm publish all ./chapters --title "..." --author "Tiểu Tâm" --cover bia.jpg</code><br>
+→ EPUB3 + PDF + HTML Reader + QR
+</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.7</div>
+<div class="step-content">
+<h4>Test & Verify</h4>
+<p>Đọc trên reader, QR hoạt động, format đúng</p>
+</div>
+</div>
+
+<div class="phase-step">
+<div class="step-num">9.8</div>
+<div class="step-content">
+<h4>Gửi EPUB lên Telegram</h4>
+<p>
+<span class="skill-tag">message tool</span>
+File EPUB + báo cáo final
+</p>
+</div>
+</div>
+
+<div class="gate"><strong>Gate PASS:</strong> Format đúng + đọc tốt trên reader + QR hoạt động + gửi OK</div>
+</div>
+
+</section>
+
+<!-- G: QUALITY GATES -->
+<section id="g">
+<h2>🚦 G — QUALITY GATES TỔNG HỢP</h2>
+
+<table>
+<tr><th>Phase</th><th>Gate Name</th><th>Tiêu chuẩn PASS</th><th>Severity</th></tr>
+<tr><td>0</td><td>SETUP</td><td>Style Guide exists + Bible initialized</td><td>CRITICAL</td></tr>
+<tr><td>1</td><td>Outline</td><td>≥ 3 conflicts + ≥ 1 twist per arc</td><td>CRITICAL</td></tr>
+<tr><td>2</td><td>Pre-Forge</td><td>Bible snapshot taken + 5 beats detailed</td><td>HIGH</td></tr>
+<tr><td>3</td><td>Mỗi beat</td><td>≥ 9/10 thẩm định đa diện (max 3 retries)</td><td>CRITICAL</td></tr>
+<tr><td>4</td><td>Guard</td><td>0 critical + ≤ 2 warnings + drift &lt; 20% + pacing OK</td><td>CRITICAL</td></tr>
+<tr><td>5</td><td>Review</td><td>Critique PASS + Humanize 0% AI trace</td><td>HIGH</td></tr>
+<tr><td>6</td><td>Ship</td><td>Gửi Telegram OK + Bible synced</td><td>HIGH</td></tr>
+<tr><td>7</td><td>Arc Review</td><td>0 critical toàn arc + pacing curve healthy</td><td>HIGH</td></tr>
+<tr><td>8</td><td>Biên Tập</td><td>Giọng nhất quán + 0 plot hole + 0 AI trace</td><td>CRITICAL</td></tr>
+<tr><td>9</td><td>EPUB</td><td>Format đúng + đọc tốt + QR hoạt động</td><td>HIGH</td></tr>
+</table>
+</section>
+
+<!-- H: 23 SKILLS -->
+<section id="h">
+<h2>🛠️ H — 23-SKILL COORDINATION MAP</h2>
+
+<table>
+<tr><th>#</th><th>Skill</th><th>Vai trò</th><th>Phase</th></tr>
+<tr><td>01</td><td><strong>omni-forge-novel</strong></td><td>Render prose chính (FORGE+C, Nacharium)</td><td>P3</td></tr>
+<tr><td>02</td><td><strong>novel-master</strong></td><td>Scan, Bible, pace, prose, voice, publish</td><td>P0,2,4,6,7,8,9</td></tr>
+<tr><td>03</td><td><strong>cw-brainstorming</strong></td><td>Brainstorm outline + beats</td><td>P1,2</td></tr>
+<tr><td>04</td><td><strong>cw-prose-writing</strong></td><td>Apply style guide khi viết</td><td>P3</td></tr>
+<tr><td>05</td><td><strong>cw-story-critique</strong></td><td>Phê bình chất lượng</td><td>P5,7</td></tr>
+<tr><td>06</td><td><strong>cw-style-skill-creator</strong></td><td>Tạo style guide (1 lần)</td><td>P0</td></tr>
+<tr><td>07</td><td><strong>cw-official-docs</strong></td><td>Wiki / character profiles</td><td>P6</td></tr>
+<tr><td>08</td><td><strong>cw-router</strong></td><td>Điều phối cw- skills</td><td>All</td></tr>
+<tr><td>09</td><td><strong>humanize</strong></td><td>Loại dấu vết AI</td><td>P3,5,8</td></tr>
+<tr><td>10</td><td><strong>epub-generator</strong></td><td>Backup EPUB tool</td><td>P9</td></tr>
+<tr><td>11</td><td><strong>qr-code-generator</strong></td><td>Tạo QR code</td><td>P9</td></tr>
+<tr><td>12</td><td><strong>book-cover-design</strong></td><td>Thiết kế bìa</td><td>P9</td></tr>
+<tr><td>13</td><td><strong>story-cog</strong></td><td>Creative writing engine phụ</td><td>P1,3</td></tr>
+<tr><td>14</td><td><strong>think-cog</strong></td><td>Deep reasoning cho outline</td><td>P1,2</td></tr>
+<tr><td>15</td><td><strong>brainstorm</strong></td><td>Quick ideas</td><td>P1</td></tr>
+<tr><td>16</td><td><strong>translate</strong></td><td>Dịch đa ngữ</td><td>P9</td></tr>
+<tr><td>17</td><td><strong>deep-research-pro</strong></td><td>Nghiên cứu bối cảnh</td><td>P0,1</td></tr>
+<tr><td>18</td><td><strong>infinity-memory</strong></td><td>Bộ nhớ dài hạn</td><td>All</td></tr>
+<tr><td>19</td><td><strong>self-improving-agent</strong></td><td>Tự học từ lỗi</td><td>P7</td></tr>
+<tr><td>20</td><td><strong>mula-audit</strong></td><td>Multi-agent review (6 reviewers)</td><td>P3,5,7</td></tr>
+<tr><td>21</td><td><strong>mula-forge-code</strong></td><td>7-phase pipeline (tool dev)</td><td>P0</td></tr>
+<tr><td>22</td><td><strong>mula-ralph</strong></td><td>Self-driving loop (auto-forge)</td><td>P3-6</td></tr>
+<tr><td>23</td><td><strong>prompt-engineering-expert</strong></td><td>Tối ưu prompt</td><td>P0</td></tr>
+</table>
+
+<p style="margin-top:1.5em;font-style:italic;color:#666">
+Khi phase execute, skill được call theo đúng thứ tự. Không có skill được call 2 lần trong 1 phase.<br>
+Mỗi skill có input/output cụ thể. Failure → retry hoặc escalate.
+</p>
+</section>
+
+<!-- I: TRIGGERS -->
+<section id="i">
+<h2>🎯 I — AUTO-TRIGGER DETECTION</h2>
+<p>Khi nhận message, tự nhận diện intent → phase kích hoạt</p>
+
+<table>
+<tr><th>Loại</th><th>Pattern</th><th>Phase</th><th>Ví dụ</th></tr>
+<tr><td>🇻🇳 Forge</td><td>"Viết chương", "Forge", "Soạn tiếp"</td><td>P2→P6</td><td>"Viết chương 21 đi"</td></tr>
+<tr><td>🇬🇧 English</td><td>"Write chapter", "Continue novel"</td><td>P2→P6</td><td>"Write chapter 21"</td></tr>
+<tr><td>📋 Plan</td><td>"Tạo outline", "Brainstorm arc"</td><td>P1</td><td>"Tạo outline arc 2"</td></tr>
+<tr><td>🔍 Check</td><td>"Scan", "Kiểm tra", "Check continuity"</td><td>P4/P7</td><td>"Scan chương 21"</td></tr>
+<tr><td>📊 Review</td><td>"Review arc", "Phê bình"</td><td>P7</td><td>"Review arc 1"</td></tr>
+<tr><td>📝 Edit</td><td>"Biên tập", "Edit all", "Rà soát"</td><td>P8</td><td>"Biên tập toàn bộ"</td></tr>
+<tr><td>📦 Publish</td><td>"Xuất epub", "Publish", "Phát hành"</td><td>P9</td><td>"Xuất epub đi"</td></tr>
+<tr><td>❓ Status</td><td>"Truyện tới đâu?", "Progress?"</td><td>Check tracker</td><td>"Tiến độ nào?"</td></tr>
+<tr><td>🐛 Issue</td><td>"Mâu thuẫn", "Plot hole", "Chậm"</td><td>P4/P7</td><td>"Chương 20 mâu thuẫn"</td></tr>
+</table>
+</section>
+
+<!-- J: 7 MODULES -->
+<section id="j">
+<h2>📚 J — 7 MODULES (CHI TIẾT)</h2>
+
+<h3>Module 1: 📚 Bible Manager</h3>
+<p>CRUD Character + World Bible. Tất cả module khác đọc từ đây.</p>
+<div class="grid-2">
+<div class="card">
+<h4>Character Bible</h4>
+<p>• Identity (name, age, appearance)<br>
+• Personality (traits, fears)<br>
+• Relationships (to other chars)<br>
+• Voice (speech patterns)<br>
+• Arc (trajectory)<br>
+• State (per chapter snapshot)</p>
+</div>
+<div class="card">
+<h4>World Bible</h4>
+<p>• Locations<br>
+• Magic/Power systems<br>
+• History & timeline<br>
+• Items & artifacts<br>
+• Factions<br>
+• Rules (physics, social)</p>
+</div>
+</div>
+
+<h3 style="margin-top:1.5em">Module 2: 🔍 Continuity Checker</h3>
+<p>30+ rules scan mâu thuẫn. Output: CRITICAL/WARNING/NOTE.</p>
+<p><strong>Categories:</strong> Character identity, Character state, Relationships, Timeline, World rules, Narrative consistency</p>
+
+<h3 style="margin-top:1.5em">Module 3: ✍️ Prose Analyzer</h3>
+<p>7 categories phân tích gọi văn tiếng Việt.</p>
+<p><strong>Categories:</strong> Sentence metrics, Vocabulary, Structure, Tone, POV, AI Trace, Vietnamese-specific</p>
+
+<h3 style="margin-top:1.5em">Module 4: 📈 Pacing Tracker</h3>
+<p>6 beat types, tension 1-10, pacing rules.</p>
+<p><strong>Beat Types:</strong> ACTION, TENSION, REVELATION, EMOTIONAL, QUIET, TRANSITION</p>
+
+<h3 style="margin-top:1.5em">Module 5: 🎭 Voice Manager</h3>
+<p>Speech patterns, catchphrases, vocab level, dialect, emotional expression.</p>
+<p><strong>Components:</strong> 7 voice profile dimensions, similarity calculation, differentiation check</p>
+
+<h3 style="margin-top:1.5em">Module 6: 📦 Publisher</h3>
+<p>EPUB Premium, PDF, HTML Reader, QR Code, Audiobook.</p>
+
+<h3 style="margin-top:1.5em">Module 7: 🎯 Pipeline Orchestrator (NEW)</h3>
+<p>Điều phối 10 phases, 23 skills, auto-trigger, quality gates, retry logic.</p>
+</section>
+
+<!-- FOOTER -->
+<div class="footer">
+<div class="brand">📜 BluePrint Novel Master V2.0.0</div>
+<p style="margin-top:0.8em">
+10 Phases · 7 Modules · 23 Skills · 6-Angle Beat Review · ≥ 9/10 Gate · 30+ Continuity Rules · Auto-Orchestration
+</p>
+<p style="margin-top:1em">
+© 2026 Tiểu Tâm — Hồ Ly Tinh chín đuôi, phụng sự văn chương 🦊<br>
+<strong>Version V2.0 Upgraded from V1.2 with BluePrint Essence</strong>
+</p>
+</div>
+
+</div>
+</body>
+</html>

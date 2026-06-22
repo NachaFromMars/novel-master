@@ -1,0 +1,127 @@
+{
+  "project": "audit-test",
+  "baselineChapters": [
+    "audit-ch01.md"
+  ],
+  "created": "2026-03-10T21:49:15.097Z",
+  "updated": "2026-03-10T21:49:15.097Z",
+  "metrics": {
+    "sentence": {
+      "avgLength": 8.1,
+      "medianLength": 8,
+      "minLength": 1,
+      "maxLength": 18,
+      "stdDev": 4.4,
+      "distribution": {
+        "short": 0.5625,
+        "medium": 0.4375,
+        "long": 0,
+        "veryLong": 0
+      }
+    },
+    "vocabulary": {
+      "uniqueRatio": 0.69,
+      "avgWordLength": 3.5,
+      "topFrequencyWords": [
+        {
+          "word": "tao",
+          "freq": 0.069
+        },
+        {
+          "word": "phụ",
+          "freq": 0.013
+        },
+        {
+          "word": "nhìn",
+          "freq": 0.013
+        },
+        {
+          "word": "\"sư",
+          "freq": 0.01
+        },
+        {
+          "word": "giờ",
+          "freq": 0.01
+        },
+        {
+          "word": "sáng",
+          "freq": 0.008
+        },
+        {
+          "word": "thể",
+          "freq": 0.008
+        },
+        {
+          "word": "đầu.",
+          "freq": 0.008
+        },
+        {
+          "word": "sư",
+          "freq": 0.008
+        },
+        {
+          "word": "nói",
+          "freq": 0.008
+        }
+      ],
+      "repetitionIndex": 0
+    },
+    "structure": {
+      "dialogueRatio": 0.25,
+      "narrationRatio": 0.75,
+      "internalMonologueRatio": 0,
+      "avgParagraphLength": 3.4,
+      "showVsTellRatio": 0.5
+    },
+    "tone": {
+      "humorFrequency": 0.104,
+      "sarcasmMarkers": 0,
+      "profanityLevel": 0.083,
+      "formalityScore": 0
+    },
+    "pov": {
+      "type": "first-person",
+      "firstPersonRatio": 0.85,
+      "pronounDistribution": {
+        "tao": 29,
+        "ta": 0,
+        "no": 4,
+        "han": 1
+      }
+    },
+    "aiTrace": {
+      "forbiddenWords": {
+        "found": [],
+        "count": 0
+      },
+      "markdownArtifacts": {
+        "found": [],
+        "count": 0
+      },
+      "patternRepetition": {
+        "maxConsecutiveSameStart": 2
+      },
+      "clean": true
+    },
+    "vietnamese": {
+      "particleUsage": {
+        "à": 23,
+        "ư": 0,
+        "nhỉ": 0,
+        "nhé": 0,
+        "đi": 0,
+        "thôi": 0,
+        "chứ": 0,
+        "mà": 0
+      },
+      "sinoVietnameseRatio": 0,
+      "sentenceEndingPatterns": {
+        "period": 0.78,
+        "ellipsis": 0.04,
+        "exclamation": 0.06,
+        "question": 0.08,
+        "dash": 0.04
+      }
+    }
+  }
+}

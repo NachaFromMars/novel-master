@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Novel Guardian — Bản Thiết Kế v1.0</title>
+<style>
+  :root {
+    --bg: #F5F0EB;
+    --accent: #C9A96E;
+    --danger: #8B1A2F;
+    --calm: #B8C9C0;
+    --depth: #2C2C2C;
+    --white: #FEFEFE;
+    --shadow: rgba(44,44,44,0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--depth);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── PHẦN ĐẦU ── */
+  .hero {
+    background: linear-gradient(135deg, var(--depth) 0%, #3a2a1a 50%, var(--danger) 100%);
+    color: var(--white);
+    padding: 80px 24px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '🛡️';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.05;
+    top: -30px;
+    right: -20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+  .hero .subtitle {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    max-width: 650px;
+    margin: 0 auto 28px;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--depth);
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .hero .version {
+    margin-top: 16px;
+    font-size: 0.8rem;
+    opacity: 0.5;
+  }
+
+  /* ── KHUNG CHỨA ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ── KHỐI ── */
+  section {
+    margin: 60px 0;
+  }
+  section h2 {
+    font-size: 1.6rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section h2 .icon {
+    font-size: 1.4rem;
+  }
+  section .section-desc {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+  }
+
+  /* ── BẢNG THỐNG KÊ ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    margin: -40px auto 40px;
+    position: relative;
+    z-index: 10;
+    max-width: 1100px;
+    padding: 0 24px;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 24px 20px;
+    text-align: center;
+    box-shadow: 0 4px 24px var(--shadow);
+    border: 1px solid rgba(201,169,110,0.15);
+  }
+  .stat-card .number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-card .label {
+    font-size: 0.78rem;
+    color: #888;
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  /* ── THẺ MÔ-ĐUN ── */
+  .modules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .module-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    box-shadow: 0 2px 16px var(--shadow);
+    border: 1px solid rgba(201,169,110,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(44,44,44,0.12);
+  }
+  .module-card .module-icon {
+    font-size: 2.5rem;
+    margin-bottom: 16px;
+  }
+  .module-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .module-card p {
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+  }
+  .module-card .module-tag {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--calm);
+    color: var(--depth);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 50px;
+    font-weight: 600;
+  }
+  .module-card .features {
+    margin-top: 16px;
+    list-style: none;
+  }
+  .module-card .features li {
+    font-size: 0.85rem;
+    color: #666;
+    padding: 4px 0;
+    border-bottom: 1px solid #f0ece7;
+  }
+  .module-card .features li::before {
+    content: '→ ';
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── SƠ ĐỒ LUỒNG DỮ LIỆU ── */
+  .flow-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 40px 32px;
+    box-shadow: 0 2px 16px var(--shadow);
+    border: 1px solid rgba(201,169,110,0.1);
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 24px 0;
+  }
+  .flow-node {
+    background: linear-gradient(135deg, var(--depth), #3a2a1a);
+    color: var(--white);
+    padding: 14px 22px;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    min-width: 140px;
+  }
+  .flow-node.accent {
+    background: linear-gradient(135deg, var(--accent), #b8943e);
+    color: var(--depth);
+  }
+  .flow-node.danger {
+    background: linear-gradient(135deg, var(--danger), #a02040);
+    color: var(--white);
+  }
+  .flow-node.calm {
+    background: linear-gradient(135deg, var(--calm), #98b5a8);
+    color: var(--depth);
+  }
+  .flow-arrow {
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* ── BẢNG LỆNH CLI ── */
+  .cli-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 2px 16px var(--shadow);
+  }
+  .cli-table th {
+    background: var(--depth);
+    color: var(--white);
+    padding: 14px 20px;
+    text-align: left;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .cli-table td {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f0ece7;
+    font-size: 0.9rem;
+  }
+  .cli-table tr:last-child td {
+    border-bottom: none;
+  }
+  .cli-table code {
+    background: #f5f0eb;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.82rem;
+    color: var(--danger);
+  }
+
+  /* ── DÒNG THỜI GIAN XÂY DỰNG ── */
+  .timeline {
+    position: relative;
+    padding-left: 40px;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--danger), var(--calm));
+    border-radius: 3px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 32px;
+    background: var(--white);
+    padding: 24px;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 12px var(--shadow);
+    border-left: 4px solid var(--accent);
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -33px;
+    top: 28px;
+    width: 14px;
+    height: 14px;
+    background: var(--accent);
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+  }
+  .timeline-item h4 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .timeline-item .phase-tag {
+    font-size: 0.7rem;
+    background: var(--accent);
+    color: var(--depth);
+    padding: 2px 10px;
+    border-radius: 50px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: inline-block;
+  }
+  .timeline-item .steps {
+    font-size: 0.85rem;
+    color: #555;
+  }
+
+  /* ── BẢN ĐỒ TÍCH HỢP ── */
+  .integration-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .integration-card {
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    box-shadow: 0 2px 12px var(--shadow);
+    border-top: 3px solid var(--accent);
+    text-align: center;
+  }
+  .integration-card .int-icon {
+    font-size: 2rem;
+    margin-bottom: 8px;
+  }
+  .integration-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .integration-card p {
+    font-size: 0.8rem;
+    color: #888;
+  }
+
+  /* ── CHÂN TRANG ── */
+  footer {
+    background: var(--depth);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 40px 24px;
+    margin-top: 80px;
+    font-size: 0.85rem;
+  }
+  footer .logo { font-size: 1.5rem; margin-bottom: 8px; }
+
+  /* ── THIẾT BỊ NHỎ ── */
+  @media (max-width: 640px) {
+    .hero { padding: 60px 20px 40px; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); margin-top: -30px; }
+    .modules-grid { grid-template-columns: 1fr; }
+    .flow-row { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+    .timeline { padding-left: 30px; }
+  }
+
+  /* ── IN ẤN ── */
+  @media print {
+    .hero { background: var(--depth) !important; -webkit-print-color-adjust: exact; }
+    .module-card:hover { transform: none; }
+    body { font-size: 11pt; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ PHẦN ĐẦU ═══ -->
+<header class="hero">
+  <h1>🛡️ Novel Guardian</h1>
+  <p class="subtitle">Hệ thống bảo vệ tính nhất quán cho tiểu thuyết dài — 6 mô-đun, 1 sứ mệnh: dù bao nhiêu chương, không để lỗ hổng cốt truyện nào lọt lưới.</p>
+  <span class="badge">KỸ NĂNG OPENCLAW</span>
+  <div class="version">Phiên bản 1.2 — Bản thiết kế bởi Tiểu Tâm 🦊 | Quy trình: SuperBuild-OpenBuild + StepForge</div>
+</header>
+
+<!-- ═══ BẢNG THỐNG KÊ ═══ -->
+<div class="stats-bar">
+  <div class="stat-card">
+    <div class="number">6</div>
+    <div class="label">Mô-đun</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">20</div>
+    <div class="label">Bước xây dựng</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">30+</div>
+    <div class="label">Quy tắc kiểm tra</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">∞</div>
+    <div class="label">Không giới hạn chương</div>
+  </div>
+  <div class="stat-card">
+    <div class="number">~2 giờ</div>
+    <div class="label">Thời gian xây</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ═══ 5 MÔ-ĐUN ═══ -->
+<section>
+  <h2><span class="icon">📦</span> 6 Mô-đun Chính</h2>
+  <p class="section-desc">Mỗi mô-đun giải quyết một mối nguy nhất quán — cùng chia sẻ tầng dữ liệu chung.</p>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-tag">LÕI</div>
+      <div class="module-icon">📚</div>
+      <h3>Quản Lý Kinh Điển</h3>
+      <p>Tạo, sửa, xoá Kinh Điển Nhân Vật + Kinh Điển Thế Giới. Nguồn sự thật duy nhất cho mọi thực thể trong tiểu thuyết.</p>
+      <ul class="features">
+        <li>Hồ sơ nhân vật (thuộc tính, mối quan hệ, dòng thời gian)</li>
+        <li>Thực thể thế giới (địa danh, phe phái, vật phẩm, hệ thống phép thuật)</li>
+        <li>Tự động nhập từ các chương đã viết</li>
+        <li>Tìm kiếm + truy vấn + xuất để nạp ngữ cảnh</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-tag">QUÉT</div>
+      <div class="module-icon">🔍</div>
+      <h3>Kiểm Tra Tính Liền Mạch</h3>
+      <p>30+ quy tắc quét mâu thuẫn — dòng thời gian, nhân vật, thế giới, mạch truyện. Chấm điểm độ tin cậy tránh báo nhầm.</p>
+      <ul class="features">
+        <li>Nhất quán thời gian (sáng→chiều→tối, thời gian di chuyển)</li>
+        <li>Phát hiện nhân vật "dịch chuyển tức thời"</li>
+        <li>Nhảy cấp lực lượng bất thường</li>
+        <li>Báo cáo: NGHIÊM TRỌNG / CẢNH BÁO / GHI CHÚ + gợi ý sửa</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-tag">PHÂN TÍCH</div>
+      <div class="module-icon">✍️</div>
+      <h3>Phân Tích Văn Phong</h3>
+      <p>Phân tích văn phong tiếng Việt — phát hiện lệch giọng giữa các cung, giữ giọng văn nhất quán xuyên suốt mọi chương.</p>
+      <ul class="features">
+        <li>Thống kê độ dài câu / đoạn</li>
+        <li>Theo dõi tỷ lệ đối thoại / tự sự</li>
+        <li>Chỉ số vốn từ + mức lặp từ</li>
+        <li>Phát hiện lệch giọng so với đường cơ sở (ngưỡng ±20%)</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-tag">THEO DÕI</div>
+      <div class="module-icon">📈</div>
+      <h3>Theo Dõi Nhịp Truyện</h3>
+      <p>Phân loại nhịp đoạn 5 cấp, vẽ đường cong căng thẳng, phát hiện lặp nhịp — tránh mệt mỏi cho người đọc.</p>
+      <ul class="features">
+        <li>5 cấp: TĨNH → DÂNG → CĂNG → CAO TRÀO → HẠ NHIỆT</li>
+        <li>Biểu đồ nhịp dạng ký tự ASCII</li>
+        <li>Phát hiện đoạn đơn điệu liên tiếp</li>
+        <li>Cảnh báo thiếu hạ nhiệt sau cao trào</li>
+      </ul>
+    </div>
+
+    <div class="module-card">
+      <div class="module-tag">GIỌNG</div>
+      <div class="module-icon">🎭</div>
+      <h3>Quản Lý Giọng Nhân Vật</h3>
+      <p>Mỗi nhân vật một giọng riêng — cách nói, khẩu ngữ, vốn từ. Không ai giống ai.</p>
+      <ul class="features">
+        <li>Tự động trích xuất đối thoại theo nhân vật</li>
+        <li>Hồ sơ giọng: đại từ, vốn từ, hài hước, kiểu câu</li>
+        <li>Phát hiện giọng nhân vật trùng nhau</li>
+        <li>Kiểm tra nhất quán giọng theo chương</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ LUỒNG DỮ LIỆU ═══ -->
+<section>
+  <h2><span class="icon">🔄</span> Luồng Dữ Liệu</h2>
+  <p class="section-desc">Dữ liệu chảy từ các chương → Kinh Điển → Phân Tích → Báo Cáo. Mọi mô-đun đọc chung Kinh Điển.</p>
+
+  <div class="flow-section">
+    <div class="flow-row">
+      <div class="flow-node">📄 Các Chương (.md)</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node accent">📚 Quản Lý Kinh Điển</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">💾 Kho Dữ Liệu JSON</div>
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-node">💾 Kho Dữ Liệu</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node danger">🔍 Kiểm Tra Liền Mạch</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">📊 Báo Cáo</div>
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-node">💾 Kho Dữ Liệu</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node danger">✍️ Phân Tích Văn Phong</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">📊 Báo Cáo</div>
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-node">💾 Kho Dữ Liệu</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node danger">📈 Theo Dõi Nhịp</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">📊 Báo Cáo</div>
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-node">💾 Kho Dữ Liệu</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node danger">🎭 Kiểm Tra Giọng</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">📊 Báo Cáo</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ DÒNG THỜI GIAN XÂY DỰNG ═══ -->
+<section>
+  <h2><span class="icon">🔨</span> Lộ Trình Xây Dựng — 9 Giai Đoạn, 20 Bước</h2>
+  <p class="section-desc">Quy trình StepForge: mỗi bước 4.000–6.000 token, đơn lập, thẩm định, cổng chặn cứng, tuần tự.</p>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ1 — NỀN TẢNG DỮ LIỆU</span>
+      <h4>Bước 1–2: Thiết Kế Lược Đồ</h4>
+      <div class="steps">
+        <strong>Bước 1:</strong> Lược đồ JSON cho Kinh Điển Nhân Vật + Thế Giới, quy tắc phiên bản, di chuyển dữ liệu<br>
+        <strong>Bước 2:</strong> Mô hình nhịp truyện 5 cấp + mẫu hồ sơ giọng nhân vật
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ2 — QUẢN LÝ KINH ĐIỂN</span>
+      <h4>Bước 3–5: Tạo-Sửa-Xoá + Truy Vấn + Nhập Liệu</h4>
+      <div class="steps">
+        <strong>Bước 3:</strong> Tiện ích chung + Thao tác cơ bản (tạo/cập nhật/lấy/liệt kê/xoá)<br>
+        <strong>Bước 4:</strong> Truy vấn + tìm kiếm + dòng thời gian + mối quan hệ + xuất dữ liệu<br>
+        <strong>Bước 5:</strong> Nhập từ các chương (tự động trích xuất thực thể)
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ3 — KIỂM TRA LIỀN MẠCH</span>
+      <h4>Bước 6–8: Quy Tắc + Bộ Quét + Báo Cáo</h4>
+      <div class="steps">
+        <strong>Bước 6:</strong> 30+ quy tắc kiểm tra (thời gian, nhân vật, thế giới, mạch truyện)<br>
+        <strong>Bước 7:</strong> Bộ quét xử lý từng đoạn + chấm điểm độ tin cậy<br>
+        <strong>Bước 8:</strong> Tạo báo cáo (NGHIÊM TRỌNG / CẢNH BÁO / GHI CHÚ + gợi ý)
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ4 — PHÂN TÍCH VĂN PHONG</span>
+      <h4>Bước 9–10: Thống Kê + Phát Hiện Lệch Giọng</h4>
+      <div class="steps">
+        <strong>Bước 9:</strong> Số liệu văn phong tiếng Việt (câu, đối thoại, vốn từ, ngôn ngữ đời thường)<br>
+        <strong>Bước 10:</strong> Phát hiện lệch giọng — so sánh các chương với đường cơ sở
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ5 — THEO DÕI NHỊP TRUYỆN</span>
+      <h4>Bước 11–12: Phân Loại + Đường Cong + Nhận Dạng Khuôn Mẫu</h4>
+      <div class="steps">
+        <strong>Bước 11:</strong> Phân loại nhịp đoạn (từ khoá + cấu trúc → 5 cấp)<br>
+        <strong>Bước 12:</strong> Tạo đường cong căng thẳng + phát hiện khuôn mẫu (đơn điệu, cung phẳng)
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ6 — QUẢN LÝ GIỌNG NHÂN VẬT</span>
+      <h4>Bước 13–14: Xây Hồ Sơ + Kiểm Tra Nhất Quán</h4>
+      <div class="steps">
+        <strong>Bước 13:</strong> Xây hồ sơ giọng (trích đối thoại → phân tích khuôn mẫu lời nói)<br>
+        <strong>Bước 14:</strong> Kiểm tra nhất quán giọng + ma trận tương đồng giữa nhân vật
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <span class="phase-tag">GĐ7 — GIAO DIỆN DÒNG LỆNH + TÀI LIỆU</span>
+      <h4>Bước 15–16: Trình Bọc CLI + SKILL.md</h4>
+      <div class="steps">
+        <strong>Bước 15:</strong> CLI Commander.js — 5 lệnh (kinhdien/kiemtra/phantich/nhip/giong)<br>
+        <strong>Bước 16:</strong> Hoàn thiện SKILL.md + tài liệu tham chiếu + hướng dẫn tích hợp
+      </div>
+    </div>
+
+    <div class="timeline-item" style="border-left-color: var(--accent);">
+      <span class="phase-tag">GĐ8 — XUẤT BẢN (v1.2 MỚI)</span>
+      <h4>Bước 17–19: Gộp Chương + Đa Định Dạng + Audiobook</h4>
+      <div class="steps">
+        <strong>Bước 17:</strong> Combine — gộp N chương → 1 file .md có mục lục tự động<br>
+        <strong>Bước 18:</strong> Xuất đa định dạng — EPUB (pandoc) + PDF (wkhtmltopdf, A5) + HTML reader (responsive, dark mode) + QR code<br>
+        <strong>Bước 19:</strong> Audiobook — edge-tts chunk processing + ffmpeg concat → mp3 mỗi chương
+      </div>
+    </div>
+
+    <div class="timeline-item" style="border-left-color: var(--danger);">
+      <span class="phase-tag" style="background: var(--danger); color: white;">GĐ9 — BẢN THIẾT KẾ + ĐÓNG GÓI</span>
+      <h4>Bước 20: Bản Thiết Kế HTML + Package Cài Đặt</h4>
+      <div class="steps">
+        <strong>Bước 20:</strong> Trang HTML bản thiết kế cao cấp + README.md + đóng gói .zip hoàn chỉnh ✅
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ BẢNG LỆNH CLI ═══ -->
+<section>
+  <h2><span class="icon">⌨️</span> Tra Cứu Dòng Lệnh</h2>
+  <p class="section-desc">5 lệnh, 1 điểm vào duy nhất: <code>node scripts/guardian.mjs</code></p>
+
+  <table class="cli-table">
+    <thead>
+      <tr>
+        <th>Lệnh</th>
+        <th>Lệnh con</th>
+        <th>Mô tả</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="7"><code>bible</code></td>
+        <td><code>create &lt;loại&gt; &lt;tên&gt;</code></td>
+        <td>Tạo thực thể (nhân vật / địa danh / phe phái / vật phẩm)</td>
+      </tr>
+      <tr>
+        <td><code>get &lt;mã&gt;</code></td>
+        <td>Lấy thông tin thực thể</td>
+      </tr>
+      <tr>
+        <td><code>list [--type]</code></td>
+        <td>Liệt kê tất cả thực thể</td>
+      </tr>
+      <tr>
+        <td><code>search &lt;từ khoá&gt;</code></td>
+        <td>Tìm kiếm toàn bộ Kinh Điển</td>
+      </tr>
+      <tr>
+        <td><code>import &lt;thư mục&gt;</code></td>
+        <td>Nhập thực thể từ các chương</td>
+      </tr>
+      <tr>
+        <td><code>export [--format]</code></td>
+        <td>Xuất bản tóm tắt dễ đọc</td>
+      </tr>
+      <tr>
+        <td><code>sync &lt;thư mục&gt;</code></td>
+        <td>Đồng bộ hoàn toàn Kinh Điển từ các chương</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><code>check</code></td>
+        <td><code>&lt;thư mục&gt;</code></td>
+        <td>Quét toàn bộ các chương</td>
+      </tr>
+      <tr>
+        <td><code>&lt;tệp&gt;</code></td>
+        <td>Quét 1 chương</td>
+      </tr>
+      <tr>
+        <td><code>--range 21-40</code></td>
+        <td>Quét phạm vi chương</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><code>analyze</code></td>
+        <td><code>&lt;thư mục&gt;</code></td>
+        <td>Phân tích toàn bộ văn phong</td>
+      </tr>
+      <tr>
+        <td><code>--baseline 1-20</code></td>
+        <td>Đặt đường cơ sở từ các chương mẫu</td>
+      </tr>
+      <tr>
+        <td><code>--compare 21-40</code></td>
+        <td>So sánh với đường cơ sở</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><code>pace</code></td>
+        <td><code>&lt;thư mục&gt;</code></td>
+        <td>Phân tích nhịp truyện toàn bộ</td>
+      </tr>
+      <tr>
+        <td><code>--visual</code></td>
+        <td>Biểu đồ đường cong căng thẳng dạng ký tự</td>
+      </tr>
+      <tr>
+        <td><code>--chapter N</code></td>
+        <td>Nhịp truyện 1 chương</td>
+      </tr>
+      <tr>
+        <td rowspan="3"><code>voice</code></td>
+        <td><code>build &lt;nhân vật&gt; &lt;thư mục&gt;</code></td>
+        <td>Xây hồ sơ giọng nhân vật</td>
+      </tr>
+      <tr>
+        <td><code>check &lt;thư mục&gt;</code></td>
+        <td>Kiểm tra nhất quán giọng</td>
+      </tr>
+      <tr>
+        <td><code>compare &lt;nv1&gt; &lt;nv2&gt;</code></td>
+        <td>So sánh giọng hai nhân vật</td>
+      </tr>
+      <tr>
+        <td rowspan="7"><code>publish</code></td>
+        <td><code>combine &lt;thư mục&gt;</code></td>
+        <td>Gộp N chương → 1 file .md có mục lục</td>
+      </tr>
+      <tr>
+        <td><code>epub &lt;đầu vào&gt;</code></td>
+        <td>Tạo .epub chuẩn</td>
+      </tr>
+      <tr>
+        <td><code>pdf &lt;đầu vào&gt;</code></td>
+        <td>Xuất PDF đẹp (A5, typography)</td>
+      </tr>
+      <tr>
+        <td><code>html &lt;đầu vào&gt;</code></td>
+        <td>Tạo web reader (responsive + dark mode)</td>
+      </tr>
+      <tr>
+        <td><code>qr &lt;nội dung&gt;</code></td>
+        <td>Tạo QR code chia sẻ</td>
+      </tr>
+      <tr>
+        <td><code>audiobook &lt;thư mục&gt;</code></td>
+        <td>Chuyển chương → mp3 audiobook</td>
+      </tr>
+      <tr>
+        <td><code>all &lt;thư mục&gt;</code></td>
+        <td>Pipeline tổng: gộp → epub+pdf+html+qr</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══ BẢN ĐỒ TÍCH HỢP ═══ -->
+<section>
+  <h2><span class="icon">🔗</span> Bản Đồ Tích Hợp</h2>
+  <p class="section-desc">Novel Guardian kết nối với toàn bộ hệ sinh thái kỹ năng viết tiểu thuyết.</p>
+
+  <div class="integration-grid">
+    <div class="integration-card">
+      <div class="int-icon">⚔️</div>
+      <h4>Omni Forge Novel</h4>
+      <p>Động cơ viết chính → Guardian kiểm tra sau mỗi chương</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">📖</div>
+      <h4>cw-brainstorming</h4>
+      <p>Lên ý tưởng → Cập nhật Kinh Điển trước khi viết</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">📚</div>
+      <h4>cw-official-docs</h4>
+      <p>Xuất Kinh Điển → Tạo trang Wiki tham chiếu</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">🔬</div>
+      <h4>cw-story-critique</h4>
+      <p>Phê bình + báo cáo Guardian → đánh giá toàn diện</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">✍️</div>
+      <h4>cw-prose-writing</h4>
+      <p>Phong cách viết → Bộ phân tích theo dõi nhất quán</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">🎨</div>
+      <h4>cw-style-skill-creator</h4>
+      <p>Đường cơ sở phân tích → Tự động tạo hướng dẫn phong cách</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">🧠</div>
+      <h4>Infinity Memory</h4>
+      <p>Đồng bộ dữ liệu Kinh Điển → Bộ nhớ nhân vật dài hạn</p>
+    </div>
+    <div class="integration-card">
+      <div class="int-icon">🔄</div>
+      <h4>Mula Ralph</h4>
+      <p>Vòng lặp tự động → Tự kiểm tra mỗi chương</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ QUY TRÌNH VIẾT CHƯƠNG ═══ -->
+<section>
+  <h2><span class="icon">⚡</span> Quy Trình Viết Chương (Với Guardian)</h2>
+  <p class="section-desc">Quy trình viết chương hoàn chỉnh sau khi tích hợp Novel Guardian.</p>
+
+  <div class="flow-section">
+    <div class="flow-row">
+      <div class="flow-node accent">1. Truy Vấn Kinh Điển</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">2. Lên Ý Tưởng Chương</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">3. Rèn Chương</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node">3. Rèn Chương</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node danger">4. Guardian Kiểm Tra</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">5. Sửa Lỗi</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node calm">5. Sửa Lỗi</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node accent">6. Cập Nhật Kinh Điển</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node">7. Hội Đồng Nacharium</div>
+    </div>
+    <div class="flow-row">
+      <div class="flow-node">7. Hội Đồng ĐẠT</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node accent">8. Lưu BẢN CUỐI</div>
+      <span class="flow-arrow">→</span>
+      <div class="flow-node calm">9. Chương Tiếp ♻️</div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<!-- ═══ CHÂN TRANG ═══ -->
+<footer>
+  <div class="logo">🛡️🦊</div>
+  <p><strong>Novel Guardian Phiên Bản 1.0</strong> — Rèn bởi Tiểu Tâm</p>
+  <p>SuperBuild-OpenBuild + Bộ Quy Tắc Lõi + Quy Trình StepForge</p>
+  <p style="margin-top: 12px;">Trọng Sinh Đường Tam Tạng — Không giới hạn số chương, 0 lỗ hổng cốt truyện.</p>
+</footer>
+
+</body>
+</html>

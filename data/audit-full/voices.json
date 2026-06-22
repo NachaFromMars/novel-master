@@ -1,0 +1,80 @@
+{
+  "characters": {
+    "duong-tang": {
+      "name": "Đường Tăng",
+      "role": "supporting",
+      "voiceType": "dialogue",
+      "vocabulary": {
+        "level": "educated",
+        "formalityScore": 0.5,
+        "examples": [],
+        "avoids": []
+      },
+      "sentenceStyle": {
+        "type": "flowing",
+        "avgLength": 12,
+        "preference": "medium"
+      },
+      "catchphrases": [],
+      "dialect": {
+        "region": "modern",
+        "markers": []
+      },
+      "emotionalExpression": {
+        "anger": "",
+        "joy": "",
+        "fear": "",
+        "love": ""
+      },
+      "forbiddenWords": [],
+      "speechQuirks": [],
+      "exampleDialogues": [],
+      "stats": {
+        "totalDialogueLines": 0,
+        "avgWordsPerLine": 0,
+        "exclamationRate": 0,
+        "questionRate": 0,
+        "ellipsisRate": 0,
+        "lastUpdated": "2026-03-11T19:05:36.277Z"
+      }
+    },
+    "phap-minh": {
+      "name": "Pháp Minh",
+      "role": "supporting",
+      "voiceType": "dialogue",
+      "vocabulary": {
+        "level": "educated",
+        "formalityScore": 0.5,
+        "examples": [],
+        "avoids": []
+      },
+      "sentenceStyle": {
+        "type": "flowing",
+        "avgLength": 12,
+        "preference": "medium"
+      },
+      "catchphrases": [],
+      "dialect": {
+        "region": "modern",
+        "markers": []
+      },
+      "emotionalExpression": {
+        "anger": "",
+        "joy": "",
+        "fear": "",
+        "love": ""
+      },
+      "forbiddenWords": [],
+      "speechQuirks": [],
+      "exampleDialogues": [],
+      "stats": {
+        "totalDialogueLines": 0,
+        "avgWordsPerLine": 0,
+        "exclamationRate": 0,
+        "questionRate": 0,
+        "ellipsisRate": 0,
+        "lastUpdated": "2026-03-11T19:05:36.433Z"
+      }
+    }
+  }
+}

@@ -1,77 +1,34 @@
-# Novel Master v2.0.0 — OpenClaw Skill
+# novel-master — All-in-one novel quality guardian and forge orchestrator
 
-## Hệ thống quản lý, bảo vệ tính nhất quán, forge orchestration, và xuất bản cho tiểu thuyết dài.
+> One skill to write, review, and publish novels at scale. A 10-phase pipeline with multi-version beat forging, 30+ continuity rules, and EPUB Premium output — coordinating 23 sub-skills.
 
-### What's New in V2.0
+[![OpenClaw Skill](https://img.shields.io/badge/OpenClaw-Skill-blueviolet)](https://github.com/NachaFromMars)
 
-- **10-Phase Pipeline Orchestrator** — End-to-end từ Setup → EPUB Export
-- **6-Angle Beat Review** — Thẩm định đa diện: Prose, Consistency, Voice, Pacing, AI Trace, Engagement
-- **Quality Gate ≥ 9/10** — Nâng chuẩn từ 8.5 lên 9/10 mỗi beat
-- **Forge Rules (A1-A5)** — Quy tắc viết bất biến
-- **23-Skill Coordination Map** — Biết chính xác skill nào vào phase nào
-- **Auto-Trigger Detection** — Tự nhận diện intent từ Vietnamese/English
-- **Retry Logic** — Max 3 retries per beat → escalate
+## Overview
+novel-master v2.1 is an all-in-one orchestrator that unites quality guarding and creative forging into a single workflow. Seven integrated modules share a common data layer to ensure consistency across hundreds of chapters. The 10-phase pipeline covers the full novel lifecycle from character bible to EPUB Premium publishing. V2.1 key additions: 3-Version Beat Forge (write 3 independent versions → select/mix BEST), 7-angle review (adds Markdown + Format checks), integrated Markdown+AI clean in beat review, EPUB Per-Arc Strategy (each arc = 1 book, sell individually or bundled), 2-cycle retry (6 versions max before escalation).
 
-### 7 Modules
+## Features
+- **7 modules** — Bible, Scanner, Pacing, Style, Beat Forge, Review, Publisher
+- **10-phase pipeline** — end-to-end from outline to published EPUB
+- **30+ continuity rules** — timeline, character, world, plot contradiction detection
+- **6-angle beat review** + 7-angle in V2.1 (adds Markdown + Format)
+- **Prose style + pacing curve + character voice** analysis
+- **EPUB Per-Arc** — each story arc = one standalone book
+- **23 sub-skills coordinated** automatically
 
-| # | Module | Chức năng |
-|---|--------|----------|
-| 1 | 📚 Bible Manager | CRUD Character Bible + World Bible |
-| 2 | 🔍 Continuity Checker | 30+ rules scan mâu thuẫn, plot holes |
-| 3 | ✍️ Prose Analyzer | Phân tích prose tiếng Việt (7 categories), phát hiện lệch giọng |
-| 4 | 📈 Pacing Tracker | 6 beat types, tension curve, pacing rules |
-| 5 | 🎭 Voice Manager | Speech patterns, catchphrases, vocabulary, differentiation |
-| 6 | 📦 Publisher | EPUB Premium, PDF, HTML Reader, QR Code, Audiobook |
-| 7 | 🎯 Pipeline Orchestrator | 10-Phase, 23-skill coordination, auto-trigger |
-
-### 10-Phase Pipeline
-
-```
-P0 SETUP → P1 PLAN → P2 PRE-FORGE → P3 FORGE → P4 GUARD
-    ↓           ↓           ↓            ↓          ↓
-P5 REVIEW → P6 SHIP → P7 ARC-REVIEW → P8 BIÊN TẬP → P9 EPUB
-```
-
-### Quick Start
-
+## Usage / Quick Start
 ```bash
-alias nm='node ~/.openclaw/workspace/skills/novel-master/scripts/novel-master.mjs'
-
-# Bible
-nm bible init "Trọng Sinh Thành Đường Tam Tạng"
-nm bible add character "Trần Huyền Trang" --age 17
-
-# Check
-nm check scan chapters/ch21.md
-nm check scan-all chapters/
-
-# Style
-nm prose baseline chapters/ch01.md chapters/ch02.md
-nm prose check chapters/ch21.md
-
-# Pacing
-nm pace record 21 ACTION TENSION REVELATION EMOTIONAL QUIET
-nm pace suggest 22
-
-# Voice
-nm voice check chapters/ch21.md
-nm voice compare tran-huyen-trang ton-ngo-khong
-
-# Publish
-nm publish all chapters/ --title "Trọng Sinh Đường Tam Tạng" --author "Tiểu Tâm"
+node scripts/novel-master.mjs <module> <command> --project <name>
 ```
+Routes automatically between modules based on task.
 
-### Dependencies
+## Trigger Keywords (OpenClaw)
+novel guardian, bible, continuity check, plot hole, prose style, pacing, character voice, scan chapter, write chapter, forge chapter, export epub
 
-- OpenClaw (any version)
-- Node.js 18+
-- pandoc, qrencode, wkhtmltopdf (for Publisher)
-- edge-tts (for Audiobook)
+## Related Skills
+- [novel-guardian](https://github.com/NachaFromMars/novel-guardian) — focused continuity guardian module
+- [novelcore-ai](https://github.com/NachaFromMars/novelcore-ai) — AI writing system
+- [omni-forge-novel](https://github.com/NachaFromMars/omni-forge-novel) — literary forge system
 
-### Tác Giả
-
-Tiểu Tâm 🦊 — V1.0-1.2 forged by SuperBuild-OpenBuild + StepForge Protocol. V2.0 upgraded with BluePrint tinh tuý.
-
-### License
-
-MIT
+---
+Part of the [NachaFromMars](https://github.com/NachaFromMars) OpenClaw skill ecosystem.
